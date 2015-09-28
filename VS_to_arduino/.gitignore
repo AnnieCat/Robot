@@ -1,3 +1,6 @@
+build/
+intermediate/
+
 # User-specific files
 *.suo
 *.user
@@ -7,10 +10,6 @@
 [Dd]ebug/
 [Rr]elease/
 [Oo]bj/
-
-# enable Atom Libraries folder
-!build/Debug
-build/*.exe
 
 *.ilk
 *.obj

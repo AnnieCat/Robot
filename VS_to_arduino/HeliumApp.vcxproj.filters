@@ -13,11 +13,11 @@
     <ClCompile Include="third_party\juce\modules\juce_audio_devices\juce_audio_devices.cpp">
       <Filter>juce</Filter>
     </ClCompile>
-    <ClCompile Include="AnnieApp.cpp">
-      <Filter>App\Core</Filter>
-    </ClCompile>
     <ClCompile Include="third_party\juce\modules\juce_events\juce_events.cpp">
       <Filter>juce</Filter>
+    </ClCompile>
+    <ClCompile Include="SendSignal.cpp">
+      <Filter>App\Core</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

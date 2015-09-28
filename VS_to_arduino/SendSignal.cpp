@@ -8,14 +8,13 @@
 
 using namespace std;
 
-
 int main(){
 
 	MidiPlayer player;
 
 	while (1)
 	{
-		cout << "on or off?  0 - 1" << endl;
+		cout << "on or off? 0-1" << endl;
 		int lightbulb;
 		cin >> lightbulb;
 
@@ -23,6 +22,4 @@ int main(){
 
 		std::this_thread::sleep_for(std::chrono::milliseconds(7));
 	}
-
-	return 0;
 }

@@ -20,8 +20,8 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{BD083610-DAD1-49FF-B6CB-1EC5DB48519B}</ProjectGuid>
-    <RootNamespace>HeliumApp</RootNamespace>
-    <ProjectName>AnnieApp</ProjectName>
+    <RootNamespace>VS_to_Arduino</RootNamespace>
+    <ProjectName>SendSignal</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -186,7 +186,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="AnnieApp.cpp" />
+    <ClCompile Include="SendSignal.cpp" />
     <ClCompile Include="third_party\juce\modules\juce_audio_basics\juce_audio_basics.cpp" />
     <ClCompile Include="third_party\juce\modules\juce_audio_devices\juce_audio_devices.cpp" />
     <ClCompile Include="third_party\juce\modules\juce_core\juce_core.cpp" />

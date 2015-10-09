@@ -15,10 +15,10 @@ public:
 	{
 		juce::StringArray outputDevices = juce::MidiOutput::getDevices();
 
-		std::cout << "Listing MIDI Interfaces: " << std::endl;
+		//std::cout << "Listing MIDI Interfaces: " << std::endl;
 		for (int i = 0; i < outputDevices.size(); i++)
 		{
-			std::cout << i << " is " << outputDevices[i].toStdString().c_str() << std::endl;
+			//std::cout << i << " is " << outputDevices[i].toStdString().c_str() << std::endl;
 		}
 
 		// On dimitri's computer, arduino_midi is 2, but may change

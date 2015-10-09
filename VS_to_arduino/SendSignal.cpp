@@ -1,3 +1,7 @@
+// C:\Program Files (x86)\Intel\RSSDK\lib\$(Platform)
+// $(GrapheneTrimpin)\third_party\lib\$(Platform)\
+
+
 #include "Midi.h"
 #include <chrono>
 #include <thread>
@@ -8,7 +12,7 @@
 #include <string>
 
 #include "pxcsensemanager.h"
-#include "pxcfaceconfiguration.h"
+#include "pxcemotion.h"
 
 using namespace std;
 
@@ -23,25 +27,39 @@ public:
 	void update();
 	void cleanup();
 
+	bool iSeeYou;
 
 private:
 	PXCSenseManager *mSenseMgr;
-	PXCFaceData *mFaceData;
+	PXCFaceModule * faceModule;
+	PXCFaceConfiguration *facec;
+	PXCFaceData *fdata;
 };
 
 void SendSignal::setup()
 {
-
-
 	mSenseMgr = PXCSenseManager::CreateInstance();
-	auto st = mSenseMgr->EnableFace();
-	auto fm = mSenseMgr->QueryFace();
-	auto cfg = fm->CreateActiveConfiguration();
-	st = mSenseMgr->Init();
 
-	cfg->pose.isEnabled = false;
-	cfg->ApplyChanges();
-	mFaceData = fm->CreateOutput();
+	if (!mSenseMgr)
+		cout << "failed to create SDK Sense Manager" << endl;
+
+	mSenseMgr->EnableFace();
+
+	faceModule = mSenseMgr->QueryFace();
+	facec = faceModule->CreateActiveConfiguration();
+	PXCFaceConfiguration::ExpressionsConfiguration *expc = facec->QueryExpressions();
+	expc->Enable();
+	expc->EnableAllExpressions();
+
+	facec->SetTrackingMode(PXCFaceConfiguration::TrackingModeType::FACE_MODE_COLOR);
+	facec->ApplyChanges();
+
+	fdata = faceModule->CreateOutput();
+
+	mSenseMgr->EnableEmotion();
+	cout << "initialized" << endl;
+
+	mSenseMgr->Init();
 }
 
 int Map(int value, int low1, int high1, int low2, int high2)
@@ -49,41 +67,101 @@ int Map(int value, int low1, int high1, int low2, int high2)
 	return low2 + (value - low1) * (high2 - low2) / (high1 - low1);
 }
 
-//face expressions-- Anger, Disgust, Fear, Joy, Sadness, Surprise
-//use expression configuration interface
-//https://software.intel.com/sites/landingpage/realsense/camera-sdk/v1.1/documentation/html/expressionsconfiguration_pxcfaceconfiguration.html
-//https://software.intel.com/sites/landingpage/realsense/camera-sdk/v1.1/documentation/html/queryexpressions_face_pxcfacedata.html
 
 void SendSignal::update()
-{
-	// ---- Send explicit X Y coordinates
-		
+{	
 	MidiPlayer player;
-
-	/*while(true)
-	{
-		int myx;
-		int mychannel;
-
-		cout << "channel? X is 1, Y is 2" << endl;
-		cin >> mychannel;
-		cout << "value?  10-120 for x, 130 - 254 for y " << endl;
-		cin >> myx;
-		player.SendMidiMessage(mychannel, 0, myx);
-
-		//send 10 - 120
-		
-	}*/
+	int numFaces = 0;
 
 	if (mSenseMgr->AcquireFrame(true) >= PXC_STATUS_NO_ERROR)
 	{
-		if (!mFaceData)
+		PXCEmotion *emotionDet = mSenseMgr->QueryEmotion();
+		PXCEmotion::EmotionData arrData[10];
+
+		fdata->Update();
+
+		int numFaces = fdata->QueryNumberOfDetectedFaces();
+
+		for (int i = 0; i < numFaces; ++i)
+		{
+			PXCFaceData::Face *face = fdata->QueryFaceByIndex(i);
+			PXCFaceData::ExpressionsData *edata = face->QueryExpressions();
+
+			emotionDet->QueryAllEmotionData(i, &arrData[0]);
+
+# pragma region Face Tracking
+
+			if (arrData->rectangle.x > -1 && arrData->rectangle.y > -1)
+			{
+				cout << arrData->rectangle.x << ", " << arrData->rectangle.y << endl;
+				iSeeYou = true;
+			}
+			else
+				iSeeYou = false;
+
+# pragma endregion 
+
+# pragma region Expression Logic
+			
+			if (iSeeYou)
+			{
+				PXCFaceData::ExpressionsData::FaceExpressionResult smileScore;
+				edata->QueryExpression(PXCFaceData::ExpressionsData::EXPRESSION_SMILE, &smileScore);
+
+				PXCFaceData::ExpressionsData::FaceExpressionResult raiseLeftBrow;
+				edata->QueryExpression(PXCFaceData::ExpressionsData::EXPRESSION_BROW_RAISER_LEFT, &raiseLeftBrow);
+				PXCFaceData::ExpressionsData::FaceExpressionResult raiseRightBrow;
+				edata->QueryExpression(PXCFaceData::ExpressionsData::EXPRESSION_BROW_RAISER_RIGHT, &raiseRightBrow);
+
+				PXCFaceData::ExpressionsData::FaceExpressionResult eyeClosedLeft;
+				edata->QueryExpression(PXCFaceData::ExpressionsData::EXPRESSION_EYES_CLOSED_LEFT, &eyeClosedLeft);
+				PXCFaceData::ExpressionsData::FaceExpressionResult eyeClosedRight;
+				edata->QueryExpression(PXCFaceData::ExpressionsData::EXPRESSION_EYES_CLOSED_RIGHT, &eyeClosedRight);
+
+				PXCFaceData::ExpressionsData::FaceExpressionResult kiss;
+				edata->QueryExpression(PXCFaceData::ExpressionsData::EXPRESSION_KISS, &kiss);
+
+				PXCFaceData::ExpressionsData::FaceExpressionResult openMouth;
+				edata->QueryExpression(PXCFaceData::ExpressionsData::EXPRESSION_MOUTH_OPEN, &openMouth);
+
+				PXCFaceData::ExpressionsData::FaceExpressionResult tongueOut;
+				edata->QueryExpression(PXCFaceData::ExpressionsData::EXPRESSION_TONGUE_OUT, &tongueOut);
+
+
+				if (smileScore.intensity > 80)
+					cout << "smile back!" << endl;
+
+				if (raiseLeftBrow.intensity > 80 && raiseRightBrow.intensity > 80)
+					cout << "eyebrows up" << endl;
+				if (raiseLeftBrow.intensity > 80 && raiseRightBrow.intensity < 80)
+					cout << "eyebrow raised" << endl;
+				if (raiseLeftBrow.intensity < 80 && raiseRightBrow.intensity > 80)
+					cout << "eyebrow raised" << endl;
+
+				if (eyeClosedLeft.intensity > 80 && eyeClosedRight.intensity > 80)
+					cout << "eyes Closed" << endl;
+				//else
+				// eyes open
+
+				if (kiss.intensity > 80)
+					cout << "kissy face!" << endl;
+
+				if (openMouth.intensity > 80)
+					cout << "say Ahhhhh" << endl;
+
+				if (tongueOut.intensity > 80)
+					cout << "Stick Tongue Out" << endl;
+			}
+
+# pragma endregion
+
+		/*if (!mFaceData)
 			mFaceData = mSenseMgr->QueryFace()->CreateOutput();
 		if (mFaceData)
 		{
 			mFaceData->Update();
 			auto numFaces = mFaceData->QueryNumberOfDetectedFaces();
-			
+#pragma region "Faces"	
 			for (int i = 0; i < numFaces; ++i)
 			{
 				//track up to 4 faces -- only 1 face has landmarks
@@ -96,11 +174,11 @@ void SendSignal::update()
 						PXCRectI32 outR;
 						if (dd->QueryBoundingRect(&outR))
 						{
+							cout << "found face" << endl;
 							MidiPlayer player;
 
 							int myX, myY;
 							
-							// for the servo's extent extend last 2 digits to 180 and 10
 							myX = Map(outR.x, 0, 1500, 130, 60);
 							myY = Map(outR.y, 0, 730, 40, 80);
 
@@ -111,14 +189,14 @@ void SendSignal::update()
 
 								if (temp < 1)
 								{
-									player.SendMidiMessage(1, 0, myX);
+									//player.SendMidiMessage(1, 0, myX);
 									cout << "0 - " << myX << endl;
 									cout << "rotation: " << myX << endl;
 								}
 								else
 								{
 									int modulo = myX % 126;
-									player.SendMidiMessage(1, modulo, 126);
+									//player.SendMidiMessage(1, modulo, 126);
 									cout << "1 - " << modulo << endl;
 									cout << "rotation: " << myX << endl;
 								}
@@ -130,24 +208,30 @@ void SendSignal::update()
 
 								if (temp < 1)
 								{
-									player.SendMidiMessage(2, 0, myY);
+									//player.SendMidiMessage(2, 0, myY);
 									cout << "0 - " << myY << endl;
 									cout << "rotation: " << myY << endl;
 								}
 								else
 								{
 									int modulo = myY % 126;
-									player.SendMidiMessage(2, modulo, 126);
+									//player.SendMidiMessage(2, modulo, 126);
 									cout << "1 - " << modulo << endl;
 									cout << "rotation: " << myY << endl;
 								}
 							}
 
-							std::this_thread::sleep_for(std::chrono::milliseconds(50));}
+
+							std::this_thread::sleep_for(std::chrono::milliseconds(50));
+						}
 					}
-				}
+					PXCEmotion::EmotionData emoData[10];
+					auto emo = mSenseMgr->QueryEmotion();
+				//}
+			//}*/
+
 			}
-		}
+
 		mSenseMgr->ReleaseFrame();
 	}
 }
@@ -156,8 +240,13 @@ void SendSignal::update()
 
 void SendSignal::cleanup()
 {
-	if (mFaceData)
-		mFaceData->Release();
+	if (faceModule)
+		faceModule->Release();
+	if (facec)
+		facec->Release();
+	if (fdata)	
+		fdata->Release();
+
 	mSenseMgr->Close();
 }
 
@@ -171,24 +260,3 @@ int main()
 		mySendSignal.update();
 	mySendSignal.cleanup();
 }
-
-// C:\Program Files (x86)\Intel\RSSDK\lib\$(Platform)
-// $(GrapheneTrimpin)\third_party\lib\$(Platform)\
-
-//  Sample Code -- C++ talking to Arduino
-
-/*int main(){
-
-	MidiPlayer player;
-
-	while (1)
-	{
-		cout << "on or off? 0-1" << endl;
-		int lightbulb;
-		cin >> lightbulb;
-
-		player.SendMidiMessage(1, lightbulb, 10);
-
-		std::this_thread::sleep_for(std::chrono::milliseconds(7));
-	}
-}*/

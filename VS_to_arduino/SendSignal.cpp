@@ -93,8 +93,16 @@ void SendSignal::update()
 
 			if (arrData->rectangle.x > -1 && arrData->rectangle.y > -1)
 			{
-				cout << arrData->rectangle.x << ", " << arrData->rectangle.y << endl;
+				int myX, myY;
 				iSeeYou = true;
+
+				myX = Map(arrData->rectangle.x, 500, 0, 0, 80);
+				myY = Map(arrData->rectangle.y, 0, 320, 0, 40);
+				
+				player.SendMidiMessage(1, myX + 60, 10);
+				player.SendMidiMessage(2, myY + 40, 10);
+				 
+				std::this_thread::sleep_for(std::chrono::milliseconds(50));
 			}
 			else
 				iSeeYou = false;
@@ -150,7 +158,7 @@ void SendSignal::update()
 					cout << "say Ahhhhh" << endl;
 
 				if (tongueOut.intensity > 80)
-					cout << "Stick Tongue Out" << endl;
+					cout << "Stick Tongue Out" << endl; 
 			}
 
 # pragma endregion

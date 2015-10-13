@@ -19,12 +19,12 @@ void HandleNoteOn(byte channel, byte pitch, byte velocity)
 {  
   if(channel == 1)
   {
-    myX = velocity + pitch;
+    myX = pitch;
     myServoX.write(myX);
   }
   if(channel == 2)
   {
-    myY = velocity + pitch;
+    myY = pitch;
     myServoY.write(myY);
   }
 }
@@ -33,11 +33,10 @@ void setup() {
   MIDI.begin(MIDI_CHANNEL_OMNI);
   MIDI.setHandleNoteOn(HandleNoteOn);
   
-  myServoX.attach(9);
-  myServoY.attach(10);
+  myServoX.attach(3);
+  myServoY.attach(4);
 
- // myServoY.write(80);
-
+  //for the LED
   pinMode(12, OUTPUT);
 }
 

@@ -5,15 +5,28 @@
 
 #include "Midi.h"
 
-#include <iostream>
-#include <queue>
-#include <memory>
-#include <string>
+
 
 using namespace std;
 
+int width, height;
+stbi_uc * myImage = stbi_load("textures/neutral/eyeOpen.jpg", &width, &height, nullptr, 3);
 
-
+SendSignal::SendSignal()
+{
+	BlinkAnim = {
+		{ "textures/neutral/eyeOpen.jpg", 0 },
+		{ "textures/wink/wink_03.jpg", 2 },
+		{ "textures/wink/wink_04.jpg", 2 },
+		{ "textures/wink/wink_05.jpg", 2 },
+		{ "textures/wink/wink_06.jpg", 2 },
+		{ "textures/wink/wink_05.jpg", 2 },
+		{ "textures/wink/wink_04.jpg", 2 },
+		{ "textures/wink/wink_03.jpg", 2 },
+		{ "textures/wink/wink_02.jpg", 2 },
+		{ "textures/neutral/eyeOpen.jpg", 2 }
+	};
+}
 
 void SendSignal::setup()
 {
@@ -253,17 +266,50 @@ void SendSignal::cleanup()
 	mSenseMgr->Release();
 }
 
+
+
 int main()
 {
+	// Set up our SendSignal instance
 	SendSignal mySendSignal;
-
 	mySendSignal.setup();
-	mySendSignal.AnimationPlayer(); 
+
+	// Open up a GLFW window
+	glfwInit();
+	GLFWwindow * win = glfwCreateWindow(800, 480, "Robot Face", nullptr, nullptr);
+	//glfwSetWindowUserPointer(win, this); 
+	//glfwSetMouseButtonCallback(win, on_mouse);
+
+	while (!glfwWindowShouldClose(win))
+	{
+		// Handle all input (user input, camera feed, etc.)
+		glfwPollEvents();
+		mySendSignal.updateTimer();
+		// TODO: Could call SendSignal::update(), etc...
+
+		// Dispatch all output (rendering, commands sent out to arduino, etc.)
+		int width, height;
+		glfwGetFramebufferSize(win, &width, &height);
+		glfwMakeContextCurrent(win);
+
+		glViewport(0, 0, width, height);
+		glClearColor(1, 1, 1, 1);
+		glClear(GL_COLOR_BUFFER_BIT);
+
+		// Coordinate System
+		glLoadIdentity();
+		glOrtho(0, width, height, 0, -1, +1);
+
+		mySendSignal.drawFrame(width, height);
+
+		glfwSwapBuffers(win);
+	}
+
+	glfwTerminate();
+	mySendSignal.cleanup();
 
 	//while (true)
-		//mySendSignal.testUpdate();
-		//mySendSignal.update();
-
-	
-	//mySendSignal.cleanup();
+	//mySendSignal.testUpdate();
+	//mySendSignal.update();
+	//mySendSignal.timer();
 }

@@ -5,15 +5,29 @@
 #pragma comment(lib, "opengl32.lib")
 
 #include <vector>
+#include <string>
+//#include <map>
 
 #include <chrono>
 #include <thread>
 
+#include <iostream>
+#include <queue>
+#include <memory>
+#include <string>
+
+
+
+
 class SendSignal
 {
 public:
+	SendSignal();
+
 	void setup();
-	void AnimationPlayer();
+	void updateTimer();
+	void resetTimer();
+	void drawFrame(int windowWidth, int windowHeight);
 	void update();
 	void testUpdate();
 	void cleanup();
@@ -22,8 +36,12 @@ public:
 	void playOneShot(const std::string, int);
 
 	
-
+	bool neutral = true;
 	bool iSeeYou;
+	bool projectOpen = true;
+	GLFWwindow * win;
+
+	std::vector<std::pair<std::string, int>> BlinkAnim;
 
 private:
 	PXCSenseManager *mSenseMgr = nullptr;

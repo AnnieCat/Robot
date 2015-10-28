@@ -17,13 +17,27 @@ stbi_uc * myImage = stbi_load("textures/neutral/eyeOpen.jpg", &width, &height, n
 bool neutral = true;
 vector<pair<string, int>> BlinkAnim { { "textures/neutral/eyeOpen.jpg", 0 }, { "textures/wink/wink_03.jpg", 2 }, { "textures/wink/wink_04.jpg", 2 }, { "textures/wink/wink_05.jpg", 2 }, { "textures/wink/wink_06.jpg", 2 }, { "textures/wink/wink_05.jpg", 2 }, { "textures/wink/wink_04.jpg", 2 }, { "textures/wink/wink_03.jpg", 2 }, { "textures/wink/wink_02.jpg", 2 }, { "textures/neutral/eyeOpen.jpg" ,2} };
 
+bool red_background = false;
 
+void on_mouse(GLFWwindow * win, int button, int action, int mods)
+{
+	//auto sig = (SendSignal*)glfwGetWindowUserPointer(win);
+	//sig->playSequence(...);
 
+	if (button == GLFW_MOUSE_BUTTON_2 && action == GLFW_PRESS)
+	{
+		red_background = !red_background;
+	}
+}
 
 void SendSignal::AnimationPlayer()
 {
 	glfwInit();
 	GLFWwindow * win = glfwCreateWindow(800, 480, "Robot Face", nullptr, nullptr);
+
+	//glfwSetWindowUserPointer(win, this); 
+
+	glfwSetMouseButtonCallback(win, on_mouse);
 
 	while (!glfwWindowShouldClose(win))
 	{
@@ -52,6 +66,9 @@ void SendSignal::AnimationPlayer()
 
 		glfwSwapBuffers(win);
 	}
+	glfwTerminate();
+
+	cleanup();
 }
 
 void SendSignal::playOneShot(const std::string s, int timeTillLoad)

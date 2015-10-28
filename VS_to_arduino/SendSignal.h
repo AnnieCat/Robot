@@ -15,12 +15,13 @@ public:
 	void setup();
 	void AnimationPlayer();
 	void update();
-	void onMouse(GLFWwindow*, int, int, int);
 	void testUpdate();
 	void cleanup();
 
 	void playSequence(std::vector<std::pair<std::string, int>>);
 	void playOneShot(const std::string, int);
+
+	
 
 	bool iSeeYou;
 
@@ -29,4 +30,5 @@ private:
 	PXCFaceModule * faceModule = nullptr;
 	PXCFaceConfiguration *facec = nullptr;
 	PXCFaceData *fdata = nullptr;
+	//GLFWwindow * win = glfwCreateWindow(800, 480, "Robot Face", nullptr, nullptr);
 };

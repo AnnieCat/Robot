@@ -246,14 +246,11 @@ void SendSignal::update()
 
 void SendSignal::cleanup()
 {
-	if (faceModule)
-		faceModule->Release();
-	if (facec)
-		facec->Release();
-	if (fdata)	
-		fdata->Release();
-
+	if(fdata) fdata->Release();
+	if(facec) facec->Release();
+	faceModule = nullptr;
 	mSenseMgr->Close();
+	mSenseMgr->Release();
 }
 
 int main()
@@ -268,5 +265,5 @@ int main()
 		//mySendSignal.update();
 
 	
-	mySendSignal.cleanup();
+	//mySendSignal.cleanup();
 }

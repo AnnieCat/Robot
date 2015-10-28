@@ -17,24 +17,36 @@ MIDI_CREATE_DEFAULT_INSTANCE();
 
 void HandleNoteOn(byte channel, byte pitch, byte velocity)
 {  
-  if(channel == 1)
+  if(velocity>15)
   {
-    myX = pitch;
-    myServoX.write(myX);
+    digitalWrite(12,HIGH);
+    delay(100);
+    digitalWrite(12, LOW);  
   }
-  if(channel == 2)
+  if(velocity<15)
   {
-    myY = pitch;
-    myServoY.write(myY);
+    digitalWrite(12,HIGH);
+    delay(100);
+    digitalWrite(12, LOW);
+    delay(100);
+    digitalWrite(12, HIGH);  
+    delay(100);
+    digitalWrite(12, LOW);
   }
 }
 
 void setup() {
   MIDI.begin(MIDI_CHANNEL_OMNI);
   MIDI.setHandleNoteOn(HandleNoteOn);
-  
-  myServoX.attach(3);
-  myServoY.attach(4);
+
+  delay(500);
+  digitalWrite(12,HIGH);
+    delay(500);
+    digitalWrite(12, LOW);
+    delay(500);
+    digitalWrite(12, HIGH);  
+    delay(500);
+    digitalWrite(12, LOW);
 
   //for the LED
   pinMode(12, OUTPUT);

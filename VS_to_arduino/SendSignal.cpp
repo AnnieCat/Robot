@@ -1,40 +1,19 @@
 // C:\Program Files (x86)\Intel\RSSDK\lib\$(Platform)
 // $(GrapheneTrimpin)\third_party\lib\$(Platform)\
 
+#include "SendSignal.h"
 
 #include "Midi.h"
-#include <chrono>
-#include <thread>
 
 #include <iostream>
 #include <queue>
 #include <memory>
 #include <string>
 
-#include "pxcsensemanager.h"
-#include "pxcemotion.h"
-
 using namespace std;
 
 
-class SendSignal
-{
-public:
-	//Constructor and Destructor
-	SendSignal(){	}
-	~SendSignal(){	}
-	void setup();
-	void update();
-	void cleanup();
 
-	bool iSeeYou;
-
-private:
-	PXCSenseManager *mSenseMgr;
-	PXCFaceModule * faceModule;
-	PXCFaceConfiguration *facec;
-	PXCFaceData *fdata;
-};
 
 void SendSignal::setup()
 {
@@ -59,7 +38,7 @@ void SendSignal::setup()
 	mSenseMgr->EnableEmotion();
 	cout << "initialized" << endl;
 
-	mSenseMgr->Init();
+	mSenseMgr->Init();	
 }
 
 int Map(int value, int low1, int high1, int low2, int high2)
@@ -67,11 +46,27 @@ int Map(int value, int low1, int high1, int low2, int high2)
 	return low2 + (value - low1) * (high2 - low2) / (high1 - low1);
 }
 
+void SendSignal::testUpdate()
+{
+	MidiPlayer player;
+	int num;
+	
+	cout << "10 or 20?" << endl;
+	cin >> num;
+	player.SendMidiMessage(1, 10, num);
+}
 
 void SendSignal::update()
 {	
 	MidiPlayer player;
 	int numFaces = 0;
+
+	int num;
+
+	cout << "number?" << endl;
+	cin >> num;
+	player.SendMidiMessage(1, 10, 10);
+
 
 	if (mSenseMgr->AcquireFrame(true) >= PXC_STATUS_NO_ERROR)
 	{
@@ -99,8 +94,11 @@ void SendSignal::update()
 				myX = Map(arrData->rectangle.x, 500, 0, 0, 80);
 				myY = Map(arrData->rectangle.y, 0, 320, 0, 40);
 				
-				player.SendMidiMessage(1, myX + 60, 10);
-				player.SendMidiMessage(2, myY + 40, 10);
+				//player.SendMidiMessage(1, myX + 60, 10);
+				//player.SendMidiMessage(2, myY + 40, 10);
+
+				cout << "X: " << myX << endl;
+				cout << "Y: " << myY << endl;
 				 
 				std::this_thread::sleep_for(std::chrono::milliseconds(50));
 			}
@@ -113,30 +111,32 @@ void SendSignal::update()
 			
 			if (iSeeYou)
 			{
-				PXCFaceData::ExpressionsData::FaceExpressionResult smileScore;
-				edata->QueryExpression(PXCFaceData::ExpressionsData::EXPRESSION_SMILE, &smileScore);
+				//PXCFaceData::ExpressionsData::FaceExpressionResult smileScore;
+				//edata->QueryExpression(PXCFaceData::ExpressionsData::EXPRESSION_SMILE, &smileScore);
 
 				PXCFaceData::ExpressionsData::FaceExpressionResult raiseLeftBrow;
 				edata->QueryExpression(PXCFaceData::ExpressionsData::EXPRESSION_BROW_RAISER_LEFT, &raiseLeftBrow);
 				PXCFaceData::ExpressionsData::FaceExpressionResult raiseRightBrow;
 				edata->QueryExpression(PXCFaceData::ExpressionsData::EXPRESSION_BROW_RAISER_RIGHT, &raiseRightBrow);
 
-				PXCFaceData::ExpressionsData::FaceExpressionResult eyeClosedLeft;
-				edata->QueryExpression(PXCFaceData::ExpressionsData::EXPRESSION_EYES_CLOSED_LEFT, &eyeClosedLeft);
-				PXCFaceData::ExpressionsData::FaceExpressionResult eyeClosedRight;
-				edata->QueryExpression(PXCFaceData::ExpressionsData::EXPRESSION_EYES_CLOSED_RIGHT, &eyeClosedRight);
+				//PXCFaceData::ExpressionsData::FaceExpressionResult eyeClosedLeft;
+				//edata->QueryExpression(PXCFaceData::ExpressionsData::EXPRESSION_EYES_CLOSED_LEFT, &eyeClosedLeft);
+				//PXCFaceData::ExpressionsData::FaceExpressionResult eyeClosedRight;
+				//edata->QueryExpression(PXCFaceData::ExpressionsData::EXPRESSION_EYES_CLOSED_RIGHT, &eyeClosedRight);
 
-				PXCFaceData::ExpressionsData::FaceExpressionResult kiss;
-				edata->QueryExpression(PXCFaceData::ExpressionsData::EXPRESSION_KISS, &kiss);
+				//PXCFaceData::ExpressionsData::FaceExpressionResult kiss;
+				//edata->QueryExpression(PXCFaceData::ExpressionsData::EXPRESSION_KISS, &kiss);
 
 				PXCFaceData::ExpressionsData::FaceExpressionResult openMouth;
 				edata->QueryExpression(PXCFaceData::ExpressionsData::EXPRESSION_MOUTH_OPEN, &openMouth);
 
-				PXCFaceData::ExpressionsData::FaceExpressionResult tongueOut;
-				edata->QueryExpression(PXCFaceData::ExpressionsData::EXPRESSION_TONGUE_OUT, &tongueOut);
+				//PXCFaceData::ExpressionsData::FaceExpressionResult tongueOut;
+				//edata->QueryExpression(PXCFaceData::ExpressionsData::EXPRESSION_TONGUE_OUT, &tongueOut);
 
+				if (raiseLeftBrow.intensity > 80 && raiseRightBrow.intensity > 80 && openMouth.intensity > 30)
+					cout << "Suprised" << endl;
 
-				if (smileScore.intensity > 80)
+				/*if (smileScore.intensity > 80)
 					cout << "smile back!" << endl;
 
 				if (raiseLeftBrow.intensity > 80 && raiseRightBrow.intensity > 80)
@@ -158,7 +158,7 @@ void SendSignal::update()
 					cout << "say Ahhhhh" << endl;
 
 				if (tongueOut.intensity > 80)
-					cout << "Stick Tongue Out" << endl; 
+					cout << "Stick Tongue Out" << endl;*/ 
 			}
 
 # pragma endregion
@@ -244,8 +244,6 @@ void SendSignal::update()
 	}
 }
 
-
-
 void SendSignal::cleanup()
 {
 	if (faceModule)
@@ -263,8 +261,12 @@ int main()
 	SendSignal mySendSignal;
 
 	mySendSignal.setup();
+	mySendSignal.AnimationPlayer(); 
 
-	while (true)
-		mySendSignal.update();
+	//while (true)
+		//mySendSignal.testUpdate();
+		//mySendSignal.update();
+
+	
 	mySendSignal.cleanup();
 }

@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="..\third_party\juce\modules\juce_audio_basics\juce_audio_basics.cpp">
+      <Filter>juce</Filter>
+    </ClCompile>
+    <ClCompile Include="..\third_party\juce\modules\juce_audio_devices\juce_audio_devices.cpp">
+      <Filter>juce</Filter>
+    </ClCompile>
+    <ClCompile Include="..\third_party\juce\modules\juce_core\juce_core.cpp">
+      <Filter>juce</Filter>
+    </ClCompile>
+    <ClCompile Include="..\third_party\juce\modules\juce_data_structures\juce_data_structures.cpp">
+      <Filter>juce</Filter>
+    </ClCompile>
+    <ClCompile Include="..\third_party\juce\modules\juce_events\juce_events.cpp">
+      <Filter>juce</Filter>
+    </ClCompile>
+    <ClCompile Include="common.cpp">
+      <Filter>fmod_common</Filter>
+    </ClCompile>
+    <ClCompile Include="common_platform.cpp">
+      <Filter>fmod_common</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\Midi.h" />
+    <ClInclude Include="..\stb_image.h" />
+    <ClInclude Include="..\third_party\juce\AppConfig.h">
+      <Filter>juce</Filter>
+    </ClInclude>
+    <ClInclude Include="..\third_party\juce\JuceHeader.h">
+      <Filter>juce</Filter>
+    </ClInclude>
+    <ClInclude Include="..\third_party\oscpkt\oscpkt.hh">
+      <Filter>oscpkt</Filter>
+    </ClInclude>
+    <ClInclude Include="..\third_party\oscpkt\udp.hh">
+      <Filter>oscpkt</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="juce">
+      <UniqueIdentifier>{1ef2cb02-dd7a-48ad-8eb0-683123ac2f88}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="oscpkt">
+      <UniqueIdentifier>{92e19f69-aedd-4bc9-8f36-26775d2d508a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="fmod_common">
+      <UniqueIdentifier>{27a65787-f489-4cc7-9b74-ffeb0fac9198}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+</Project>

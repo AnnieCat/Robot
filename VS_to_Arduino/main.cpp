@@ -52,12 +52,11 @@ class SendSignal
 	
 
 public: 
-	//void setup();
+	void setup();
 	void timerUpdate();
 	void drawFrame(int, int);
-	//void playOneShot(const string, int);
 	void playSequence(vector<pair<string, int>>);
-	//void cleanup();
+	void cleanup();
 	
 	
 
@@ -86,15 +85,36 @@ void AudioPlay(string filename)
 	system->playSound(sound, 0, false, &channel);
 }
 
-/*void SendSignal::setup(){
-//setup RealSense
-cout << "initialized" << endl;
-}*/
+void SendSignal::setup(){
+
+	mSenseMgr = PXCSenseManager::CreateInstance();
+
+	if (!mSenseMgr)
+		cout << "failed to create SDK sense Manager" << endl;
+
+	mSenseMgr->EnableFace();
+
+	faceModule = mSenseMgr->QueryFace();
+	facec = faceModule->CreateActiveConfiguration(); 
+	PXCFaceConfiguration::ExpressionsConfiguration *expc = facec->QueryExpressions();
+	expc->Enable();
+	expc->EnableAllExpressions();
+
+	facec->SetTrackingMode(PXCFaceConfiguration::TrackingModeType::FACE_MODE_COLOR);
+	facec->ApplyChanges();
+
+	fdata = faceModule->CreateOutput();
+
+	mSenseMgr->EnableEmotion();
+	cout << "initialized" << endl;
+
+	mSenseMgr->Init();
+}
 
 int main()
 {
 	SendSignal mySignal;
-	//mySignal.setup();
+	mySignal.setup();
 
 	glfwInit();
 	GLFWwindow *win = glfwCreateWindow(800, 480, "Robot Face", nullptr, nullptr);
@@ -123,7 +143,7 @@ int main()
 	}
 
 	glfwTerminate();
-	//cleanup
+	//mySignal.cleanup();
 }
 
 
@@ -177,10 +197,16 @@ void SendSignal::playSequence(vector<pair<string, int>> xxAnim)
 	neutral = false;
 }
 
-/*void SendSignal::cleanup(){
+void SendSignal::cleanup(){
 	//Release Camera Data
+	if (fdata) fdata->Release();
+	if (facec) facec->Release();
+	faceModule = nullptr;
+	mSenseMgr->Close();
+	mSenseMgr->Release();
 	//Release FMOD
-}*/
+
+}
 
 // These lines, ugly though they are, will ensure we have the right lib statements
 #ifdef _DEBUG

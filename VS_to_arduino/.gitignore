@@ -1,0 +1,34 @@
+build/
+intermediate/
+
+# User-specific files
+*.suo
+*.user
+*.DS_Store
+
+# Build results
+[Dd]ebug/
+[Rr]elease/
+[Oo]bj/
+
+*.ilk
+*.obj
+*.pch
+*.pdb
+*.log
+*.tlog
+
+# Visual C++ cache files
+ipch/
+*.opensdf
+*.sdf
+
+# Visual Studio profiler
+*.psess
+*.vsp
+*.vspx
+
+node_modules/
+
+client/.sass-cache/
+.sass-cache/**

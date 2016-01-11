@@ -314,6 +314,8 @@ int main()
 						if (neutral)
 						{
 							mySignal.start_animation(SupriseAnimT);
+
+							cout << "suprise!" << endl;
 							//showingEmotion = true;
 						}
 					}

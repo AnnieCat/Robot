@@ -9,29 +9,26 @@
 Servo myServoX;
 Servo myServoY;
 
-int myX;
-int myY;
+int myX = 90;
+int myY = 60;
 
 
 MIDI_CREATE_DEFAULT_INSTANCE();
 
 void HandleNoteOn(byte channel, byte pitch, byte velocity)
 {  
-  if(velocity>15)
+
+  if(channel == 1)
   {
-    digitalWrite(12,HIGH);
-    delay(100);
-    digitalWrite(12, LOW);  
+    digitalWrite(12, LOW);
+    myServoX.write(90);
+    myServoY.write(60);  
   }
-  if(velocity<15)
+  if(channel > 1)
   {
-    digitalWrite(12,HIGH);
-    delay(100);
-    digitalWrite(12, LOW);
-    delay(100);
-    digitalWrite(12, HIGH);  
-    delay(100);
-    digitalWrite(12, LOW);
+    digitalWrite(12, HIGH);
+    myX = pitch + 50;
+    myY = velocity + 20;
   }
 }
 
@@ -39,20 +36,22 @@ void setup() {
   MIDI.begin(MIDI_CHANNEL_OMNI);
   MIDI.setHandleNoteOn(HandleNoteOn);
 
-  delay(500);
-  digitalWrite(12,HIGH);
-    delay(500);
-    digitalWrite(12, LOW);
-    delay(500);
-    digitalWrite(12, HIGH);  
-    delay(500);
-    digitalWrite(12, LOW);
+  myServoX.attach(10);
+  myServoY.attach(9);
 
-  //for the LED
-  pinMode(12, OUTPUT);
+  myServoX.write(90);
+  myServoY.write(60);
+
+  pinMode(12,OUTPUT);
+
+  digitalWrite(12,LOW);
 }
 
 void loop() {
   //unsigned long currentMillis = millis();
   MIDI.read();
+
+  myServoX.write(myX);
+  myServoY.write(myY);
+  
 }

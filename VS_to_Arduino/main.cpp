@@ -198,6 +198,8 @@ int main()
 	
 
 	MidiPlayer player; // Put it outside the loop
+	
+	
 
 #pragma region loadData
 
@@ -206,7 +208,8 @@ int main()
 	PXCFaceData::ExpressionsData::FaceExpressionResult openMouth;
 	
 #pragma endregion
-	
+	int robotX = 90, robotY = 60;
+
 	while (!glfwWindowShouldClose(win))
 	{
 		glfwPollEvents();
@@ -226,49 +229,84 @@ int main()
 		if (mySignal.mSenseMgr->AcquireFrame(true) >= PXC_STATUS_NO_ERROR)
 		{
 			PXCEmotion *emotionDet = mySignal.mSenseMgr->QueryEmotion();
-			PXCEmotion::EmotionData arrData[10];
+			PXCEmotion::EmotionData emotion[10];
 
 			mySignal.fdata->Update();
 
 			int numFaces = mySignal.fdata->QueryNumberOfDetectedFaces();
 
+			int closestface = -1;
+			iSeeYou = false;
+			int lowestdisparity = INT_MAX;
+			int targetX, targetY;
+
 			for (int i = 0; i < numFaces; ++i)
 			{
-				PXCFaceData::Face *face = mySignal.fdata->QueryFaceByIndex(i);
-				PXCFaceData::ExpressionsData *edata = face->QueryExpressions();
 
-				emotionDet->QueryAllEmotionData(i, &arrData[0]);
+				emotionDet->QueryAllEmotionData(i, &emotion[0]);
 
 #pragma region Face Tracking
 
-				if (arrData->rectangle.x > -1 && arrData->rectangle.y > -1)
+				if (emotion[0].rectangle.x > -1 && emotion[0].rectangle.y > -1)
 				{
-					int myX, myY;
-					iSeeYou = true;
 
-					myX = Map(arrData->rectangle.x, 500, 0, 0, 80);
-					myY = Map(arrData->rectangle.y, 0, 320, 0, 40);
+					iSeeYou = true;
 					
+					int faceX = Map(emotion[0].rectangle.x, 500, 0, 0, 80); //Camera min/max : 500, 0    Robot Min/Max : 50 / 130 
+					int faceY = Map(emotion[0].rectangle.y, 0, 320, 0, 60); // Camera min/max:  0,320   Robot min/max:  40,100
+					int d = abs(faceX - robotX) + abs(faceY - robotY);   // disparity between robot's current gaze and i'th face in the camera's current frame 
+					if (d < lowestdisparity)
+					{
+						closestface = i;
+						lowestdisparity = d;
+						targetX = faceX;
+						targetY = faceY;
+					}
+
+					// the following code pivots the robot to turn toward the target face up to 1 degree on each axis per frame.
+
+
+
 				}
-				else
-					iSeeYou = false;
+			}
+			if (iSeeYou)
+			{
+				if (targetX > robotX)
+					robotX++;
+				if (targetX < robotX)
+					robotX--;
+				if (targetY > robotY)
+					robotY++;
+				if (targetY < robotY)
+					robotY--;
+
+				//player.SendMidiMessage(numFaces + 1, myX, myY);
+				player.SendMidiMessage(numFaces + 1, robotX, robotY);
+
+				cout << closestface << " " << numFaces << "      " <<  targetX << ", " << targetY << "      " << robotX << " " << robotY << endl;
+			}
+
 
 #pragma endregion
 
 #pragma region Expression Logic
 
-				if (iSeeYou)
+			if (iSeeYou)
+			{
+				PXCFaceData::Face *face = mySignal.fdata->QueryFaceByIndex(closestface);
+				PXCFaceData::ExpressionsData *edata = face->QueryExpressions();
+				if (edata)
 				{
 #pragma region Query Expression Data
 					//Eyebrows
 					edata->QueryExpression(PXCFaceData::ExpressionsData::EXPRESSION_BROW_RAISER_LEFT, &raiseLeftBrow);
 					edata->QueryExpression(PXCFaceData::ExpressionsData::EXPRESSION_BROW_RAISER_RIGHT, &raiseRightBrow);
-					
+
 					//Mouth
 					edata->QueryExpression(PXCFaceData::ExpressionsData::EXPRESSION_MOUTH_OPEN, &openMouth);
 
 #pragma endregion
-					
+
 #pragma region Sending Commands
 					//suprise
 					if (raiseLeftBrow.intensity > 80 && raiseRightBrow.intensity > 80 && openMouth.intensity > 30)
@@ -281,8 +319,11 @@ int main()
 					}
 #pragma endregion
 				}
-				mySignal.mSenseMgr->ReleaseFrame();
 			}
+				
+			
+		
+			mySignal.mSenseMgr->ReleaseFrame();
 
 #pragma endregion
 		}

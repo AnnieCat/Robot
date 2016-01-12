@@ -39,7 +39,20 @@ bool showingEmotion = false;
 
 
 typedef vector<pair<string, std::chrono::milliseconds>> animation;
-const animation * current_animation;
+
+
+
+struct keyframe
+{
+	std::string image;
+	std::chrono::milliseconds time;
+	int x, y;
+};
+
+//typedef  altAnimation;
+
+
+const vector<keyframe> * current_animation;
 std::chrono::system_clock::time_point time_anim_started;
 std::chrono::system_clock::time_point reset_blink_timer;
 
@@ -47,78 +60,93 @@ std::chrono::system_clock::time_point reset_blink_timer;
 stbi_uc *myImage = stbi_load("../textures/neutral/eyeOpen.jpg", &width, &height, nullptr, 3);
 stbi_uc *neutralImage = stbi_load("../textures/neutral/eyeOpen.jpg", &width, &height, nullptr, 3);
 
+
+/*template<class A, class B, class C>
+std::vector<std::tuple<A,B,C>> threeway_zip(const std::vector<A> & a, const std::vector<B> & b, const std::vector<C> & c)
+{
+	std::vector<std::tuple<A, B, C>> results;
+	for (size_t i = 0; i < a.size(); ++i)
+	{
+		results.push_back({ a[i], b[i], c[i] });
+	}
+	return results;
+}*/
+
+
 #pragma region AnimationData
-animation BlinkAnimT = {
-	{ "../textures/neutral/eyeOpen.jpg", std::chrono::milliseconds(0) },
-	{ "../textures/wink/wink_03.jpg", std::chrono::milliseconds(33) },
-	{ "../textures/wink/wink_04.jpg", std::chrono::milliseconds(66) },
-	{ "../textures/wink/wink_05.jpg", std::chrono::milliseconds(100) },
-	{ "../textures/wink/wink_06.jpg", std::chrono::milliseconds(133) },
-	{ "../textures/wink/wink_05.jpg", std::chrono::milliseconds(166) },
-	{ "../textures/wink/wink_04.jpg", std::chrono::milliseconds(200) },
-	{ "../textures/wink/wink_03.jpg", std::chrono::milliseconds(233) },
-	{ "../textures/wink/wink_02.jpg", std::chrono::milliseconds(266) },
-	{ "../textures/neutral/eyeOpen.jpg", std::chrono::milliseconds(300) }
+
+vector<keyframe> BlinkAnim = {
+	{"../textures/neutral/eyeOpen.jpg", std::chrono::milliseconds(0),   50, 60 },
+	{"../textures/wink/wink_03.jpg",    std::chrono::milliseconds(33),  52, 60 },
+	{"../textures/wink/wink_04.jpg",    std::chrono::milliseconds(66),  54, 60 },
+	{"../textures/wink/wink_05.jpg",    std::chrono::milliseconds(100), 56, 60 },
+	{"../textures/wink/wink_06.jpg",    std::chrono::milliseconds(133), 58, 60 },
+	{"../textures/wink/wink_05.jpg",    std::chrono::milliseconds(166), 60, 60 },
+	{"../textures/wink/wink_04.jpg",    std::chrono::milliseconds(200), 62, 60 },
+	{"../textures/wink/wink_03.jpg",    std::chrono::milliseconds(233), 64, 60 },
+	{"../textures/wink/wink_02.jpg",    std::chrono::milliseconds(266), 66, 60 },
+	{"../textures/neutral/eyeOpen.jpg", std::chrono::milliseconds(300), 68, 60 }
 };
 
 
-animation SupriseAnimT = {
-	{ "../textures/neutral/eyeOpen.jpg", std::chrono::milliseconds(0) },
-	{ "../textures/suprise/suprise_4.jpg", std::chrono::milliseconds(33) },
-	{ "../textures/suprise/suprise_3-5.jpg", std::chrono::milliseconds(300) },
-	{ "../textures/suprise/suprise_3.jpg", std::chrono::milliseconds(333) },
-	{ "../textures/suprise/close_2.jpg", std::chrono::milliseconds(616) },
-	{ "../textures/suprise/close_3.jpg", std::chrono::milliseconds(683) },
-	{ "../textures/suprise/close_4.jpg", std::chrono::milliseconds(750) },
-	{ "../textures/suprise/close_5.jpg", std::chrono::milliseconds(816) },
-	{ "../textures/suprise/close_6.jpg", std::chrono::milliseconds(883) },
-	{ "../textures/suprise/close_7.jpg", std::chrono::milliseconds(950) },
-	{ "../textures/suprise/close_7.jpg", std::chrono::milliseconds(3500) },
-	{ "../textures/wink/wink_05.jpg", std::chrono::milliseconds(3533) },
-	{ "../textures/wink/wink_04.jpg", std::chrono::milliseconds(3566) },
-	{ "../textures/wink/wink_03.jpg", std::chrono::milliseconds(3600) },
-	{ "../textures/wink/wink_02.jpg", std::chrono::milliseconds(3633) },
-	{ "../textures/neutral/eyeOpen.jpg", std::chrono::milliseconds(3666) },
-	{ "../textures/wink/wink_02.jpg", std::chrono::milliseconds(3700) },
-	{ "../textures/wink/wink_02.jpg", std::chrono::milliseconds(3733) },
-	{ "../textures/wink/wink_04.jpg", std::chrono::milliseconds(3766) },
-	{ "../textures/wink/wink_05.jpg", std::chrono::milliseconds(3800) },
-	{ "../textures/wink/wink_04.jpg", std::chrono::milliseconds(3833) },
-	{ "../textures/wink/wink_02.jpg", std::chrono::milliseconds(3866) },
-	{ "../textures/wink/wink_02.jpg", std::chrono::milliseconds(3900) },
-	{ "../textures/neutral/eyeOpen.jpg", std::chrono::milliseconds(3933) },
-	{ "../textures/neutral/eyeOpen.jpg", std::chrono::milliseconds(4333) },
-	{ "../textures/suprise/lookR_02.jpg", std::chrono::milliseconds(4366) },
-	{ "../textures/suprise/lookR_03.jpg", std::chrono::milliseconds(4400) },
-	{ "../textures/suprise/lookR_04.jpg", std::chrono::milliseconds(4433) },
-	{ "../textures/suprise/lookR_05.jpg", std::chrono::milliseconds(4466) },
-	{ "../textures/suprise/lookR_05.jpg", std::chrono::milliseconds(5883) },
-	{ "../textures/suprise/lookR_04.jpg", std::chrono::milliseconds(5916) },
-	{ "../textures/suprise/lookR_03.jpg", std::chrono::milliseconds(5950) },
-	{ "../textures/suprise/lookR_02.jpg", std::chrono::milliseconds(5983) },
-	{ "../textures/neutral/eyeOpen.jpg", std::chrono::milliseconds(6016) },
-	{ "../textures/suprise/lookL_02.jpg", std::chrono::milliseconds(6050) },
-	{ "../textures/suprise/lookL_03.jpg", std::chrono::milliseconds(6083) },
-	{ "../textures/suprise/lookL_04.jpg", std::chrono::milliseconds(6116) },
-	{ "../textures/suprise/lookL_05.jpg", std::chrono::milliseconds(6150) },
-	{ "../textures/suprise/lookL_05.jpg", std::chrono::milliseconds(7816) },
-	{ "../textures/suprise/lookL_04-5.jpg", std::chrono::milliseconds(7883) },
-	{ "../textures/suprise/lookL_04.jpg", std::chrono::milliseconds(7950) },
-	{ "../textures/suprise/lookL_03-5.jpg", std::chrono::milliseconds(8016) },
-	{ "../textures/suprise/lookL_03.jpg", std::chrono::milliseconds(8066) },
-	{ "../textures/suprise/lookL_02-5.jpg", std::chrono::milliseconds(8133) },
-	{ "../textures/suprise/lookL_02.jpg", std::chrono::milliseconds(8200) },
-	{ "../textures/suprise/lookL_01-5.jpg", std::chrono::milliseconds(8283) },
-	{ "../textures/neutral/eyeOpen.jpg", std::chrono::milliseconds(8350) }
-
+vector<keyframe> SupriseAnim = {
+	{ "../textures/neutral/eyeOpen.jpg", std::chrono::milliseconds(0), 40, 60 },
+	{ "../textures/suprise/suprise_4.jpg", std::chrono::milliseconds(33), 40, 60 },
+	{ "../textures/suprise/suprise_3-5.jpg", std::chrono::milliseconds(300), 40, 60 },
+	{ "../textures/suprise/suprise_3.jpg", std::chrono::milliseconds(333), 40, 60 },
+	{ "../textures/suprise/close_2.jpg", std::chrono::milliseconds(616), 40, 60 },
+	{ "../textures/suprise/close_3.jpg", std::chrono::milliseconds(683), 40, 60 },
+	{ "../textures/suprise/close_4.jpg", std::chrono::milliseconds(750), 40, 60 },
+	{ "../textures/suprise/close_5.jpg", std::chrono::milliseconds(816), 40, 60 },
+	{ "../textures/suprise/close_6.jpg", std::chrono::milliseconds(883), 40, 60 },
+	{ "../textures/suprise/close_7.jpg", std::chrono::milliseconds(950), 40, 60 },
+	{ "../textures/suprise/close_7.jpg", std::chrono::milliseconds(3500), 40, 60 },
+	{ "../textures/wink/wink_05.jpg", std::chrono::milliseconds(3533), 40, 60 },
+	{ "../textures/wink/wink_04.jpg", std::chrono::milliseconds(3566), 40, 60 },
+	{ "../textures/wink/wink_03.jpg", std::chrono::milliseconds(3600), 40, 60 },
+	{ "../textures/wink/wink_02.jpg", std::chrono::milliseconds(3633), 40, 60 },
+	{ "../textures/neutral/eyeOpen.jpg", std::chrono::milliseconds(3666), 40, 60 },
+	{ "../textures/wink/wink_02.jpg", std::chrono::milliseconds(3700), 40, 60 },
+	{ "../textures/wink/wink_02.jpg", std::chrono::milliseconds(3733), 40, 60 },
+	{ "../textures/wink/wink_04.jpg", std::chrono::milliseconds(3766), 40, 60 },
+	{ "../textures/wink/wink_05.jpg", std::chrono::milliseconds(3800), 40, 60 },
+	{ "../textures/wink/wink_04.jpg", std::chrono::milliseconds(3833), 40, 60 },
+	{ "../textures/wink/wink_02.jpg", std::chrono::milliseconds(3866), 40, 60 },
+	{ "../textures/wink/wink_02.jpg", std::chrono::milliseconds(3900), 40, 60 },
+	{ "../textures/neutral/eyeOpen.jpg", std::chrono::milliseconds(3933), 40, 60 },
+	{ "../textures/neutral/eyeOpen.jpg", std::chrono::milliseconds(4333), 40, 60 },
+	{ "../textures/suprise/lookR_02.jpg", std::chrono::milliseconds(4366), 40, 60 },
+	{ "../textures/suprise/lookR_03.jpg", std::chrono::milliseconds(4400), 40, 60 },
+	{ "../textures/suprise/lookR_04.jpg", std::chrono::milliseconds(4433), 40, 60 },
+	{ "../textures/suprise/lookR_05.jpg", std::chrono::milliseconds(4466), 40, 60 },
+	{ "../textures/suprise/lookR_05.jpg", std::chrono::milliseconds(5883), 40, 60 },
+	{ "../textures/suprise/lookR_04.jpg", std::chrono::milliseconds(5916), 40, 60 },
+	{ "../textures/suprise/lookR_03.jpg", std::chrono::milliseconds(5950), 40, 60 },
+	{ "../textures/suprise/lookR_02.jpg", std::chrono::milliseconds(5983), 40, 60 },
+	{ "../textures/neutral/eyeOpen.jpg", std::chrono::milliseconds(6016), 40, 60 },
+	{ "../textures/suprise/lookL_02.jpg", std::chrono::milliseconds(6050), 40, 60 },
+	{ "../textures/suprise/lookL_03.jpg", std::chrono::milliseconds(6083), 40, 60 },
+	{ "../textures/suprise/lookL_04.jpg", std::chrono::milliseconds(6116), 40, 60 },
+	{ "../textures/suprise/lookL_05.jpg", std::chrono::milliseconds(6150), 40, 60 },
+	{ "../textures/suprise/lookL_05.jpg", std::chrono::milliseconds(7816), 40, 60 },
+	{ "../textures/suprise/lookL_04-5.jpg", std::chrono::milliseconds(7883), 40, 60 },
+	{ "../textures/suprise/lookL_04.jpg", std::chrono::milliseconds(7950), 40, 60 },
+	{ "../textures/suprise/lookL_03-5.jpg", std::chrono::milliseconds(8016), 40, 60 },
+	{ "../textures/suprise/lookL_03.jpg", std::chrono::milliseconds(8066), 40, 60 },
+	{ "../textures/suprise/lookL_02-5.jpg", std::chrono::milliseconds(8133), 40, 60 },
+	{ "../textures/suprise/lookL_02.jpg", std::chrono::milliseconds(8200), 40, 60 },
+	{ "../textures/suprise/lookL_01-5.jpg", std::chrono::milliseconds(8283), 40, 60 },
+	{ "../textures/neutral/eyeOpen.jpg", std::chrono::milliseconds(8350), 40, 60 }
 };
+
+
 #pragma endregion
 
 class SendSignal	
 {
 public: 
 	void setup();
-	void start_animation(const animation & anim);
+	void start_animation(const vector<keyframe> & anim);
 	void showFrame(const std::string & s);
 	void show_current_frame();
 
@@ -184,6 +212,7 @@ void SendSignal::setup(){
 }
 
 
+int robotX, robotY;
 
 
 int main()
@@ -193,6 +222,7 @@ int main()
 
 	glfwInit();
 	GLFWwindow *win = glfwCreateWindow(800, 480, "Robot Face", nullptr, nullptr);
+	//GLFWwindow *win = glfwCreateWindow(800, 480, "Robot Face", glfwGetPrimaryMonitor(), nullptr); //fullscreen
 
 	std::chrono::system_clock::time_point t0 = std::chrono::system_clock::now();
 	
@@ -208,7 +238,7 @@ int main()
 	PXCFaceData::ExpressionsData::FaceExpressionResult openMouth;
 	
 #pragma endregion
-	int robotX = 90, robotY = 60;
+	robotX = 30, robotY = 50;
 
 	while (!glfwWindowShouldClose(win))
 	{
@@ -271,6 +301,7 @@ int main()
 			}
 			if (iSeeYou)
 			{
+				
 				if (targetX > robotX)
 					robotX++;
 				if (targetX < robotX)
@@ -279,11 +310,10 @@ int main()
 					robotY++;
 				if (targetY < robotY)
 					robotY--;
-
-				//player.SendMidiMessage(numFaces + 1, myX, myY);
+				
 				player.SendMidiMessage(numFaces + 1, robotX, robotY);
 
-				cout << closestface << " " << numFaces << "      " <<  targetX << ", " << targetY << "      " << robotX << " " << robotY << endl;
+				cout << closestface << " " << numFaces << "      " <<  targetX << ", " << targetY << "      " << robotX << " " << robotY << "     " << showingEmotion << endl;
 			}
 
 
@@ -313,10 +343,10 @@ int main()
 					{
 						if (neutral)
 						{
-							mySignal.start_animation(SupriseAnimT);
+							mySignal.start_animation(SupriseAnim);
 
 							cout << "suprise!" << endl;
-							//showingEmotion = true;
+							showingEmotion = true;
 						}
 					}
 #pragma endregion
@@ -352,26 +382,30 @@ int main()
 	mySignal.cleanup();
 }
 
+
 void SendSignal::blink_timer(std::chrono::system_clock::duration x)
 {
 	std::chrono::system_clock::duration currentTime = std::chrono::system_clock::now() - reset_blink_timer;
 	if (currentTime > std::chrono::seconds(blinkVal) && neutral)
 	{
-		start_animation(BlinkAnimT);
+		start_animation(BlinkAnim);
 		reset_blink_timer = std::chrono::system_clock::now();
 		blinkVal = 6 + (rand() % 10);
 		cout << blinkVal << endl;
+		neutral = false;
+
 	}
 }
 
-void SendSignal::start_animation(const animation & anim)
+
+void SendSignal::start_animation(const vector<keyframe> & anim)
 {
 	current_animation = &anim;
 	time_anim_started = std::chrono::system_clock::now();
-	if (anim == SupriseAnimT)
-		AudioPlay("suprise.wav");
-	if (anim == BlinkAnimT)
+	if (&anim == &BlinkAnim)
 		AudioPlay("blink.wav");
+	//if (&anim == &SupriseAnim)
+	//	AudioPlay("suprise.wav");
 }
 
 void SendSignal::showFrame(const std::string & s)
@@ -385,27 +419,38 @@ void SendSignal::showFrame(const std::string & s)
 
 void SendSignal::show_current_frame()
 {
+	MidiPlayer player;
+
+	//if (current_animation)
 	if (current_animation)
 	{
 		std::chrono::system_clock::duration time_passed = std::chrono::system_clock::now() - time_anim_started;
-		neutral = false;
+		
 		for (auto & p : *current_animation)
 		{
-			if (time_passed < p.second)
+			
+			if (time_passed < p.time)
 			{
-				showFrame(p.first);
+				showFrame(p.image); // p.x, p.y
+				if (showingEmotion)
+				{
+					robotX = p.x;
+					robotY = p.y;
+				}
 				return;
 			}
 		}
-		neutral = true;
+		
 		current_animation = nullptr;
-		glDrawPixels(800, 400, GL_RGB, GL_UNSIGNED_BYTE, neutralImage);
 	}
-	else
+
+	if(!current_animation)
 	{
 		glRasterPos2i((width - 800) / 2, (height - 480) / 2);
 		glPixelZoom(1, -1);
-		glDrawPixels(800, 400, GL_RGB, GL_UNSIGNED_BYTE, neutralImage);
+		glDrawPixels(800, 400, GL_RGB, GL_UNSIGNED_BYTE, neutralImage);		
+		neutral = true;
+		showingEmotion = false;
 	}
 }
 

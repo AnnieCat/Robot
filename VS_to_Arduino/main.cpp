@@ -46,7 +46,7 @@ struct keyframe
 {
 	std::string image;
 	std::chrono::milliseconds time;
-	int x, y;
+	float x, y;
 };
 
 //typedef  altAnimation;
@@ -72,7 +72,7 @@ std::vector<std::tuple<A,B,C>> threeway_zip(const std::vector<A> & a, const std:
 	return results;
 }*/
 
-int robotX, robotY;
+float robotX, robotY;
 
 #pragma region AnimationData
 
@@ -88,6 +88,8 @@ vector<keyframe> BlinkAnim = {
 	{"../textures/wink/wink_02.jpg",    std::chrono::milliseconds(266), robotX, robotY },
 	{"../textures/neutral/eyeOpen.jpg", std::chrono::milliseconds(300), robotX, robotY }
 };
+
+
 
 
 vector<keyframe> SupriseAnim = {
@@ -233,7 +235,8 @@ void AudioPlay(string filename)
 	FMOD::System_Create(&system);
 	system->init(32, FMOD_INIT_NORMAL, extradriverdata);
 	result = system->createSound(Common_MediaPath(filename.c_str()), FMOD_DEFAULT, 0, &sound);
-
+	
+	
 	system->playSound(sound, 0, false, &channel);
 }
 
@@ -370,7 +373,8 @@ int main()
 				
 				player.SendMidiMessage(numFaces + 1, robotX, robotY);
 
-				cout << closestface << " " << numFaces << "      " <<  targetX << ", " << targetY << "      " << robotX << " " << robotY << "     " << showingEmotion << endl;
+				cout << robotX << ", " << robotY << "       emotion: " << showingEmotion << ", neutral:" << neutral << endl;
+				//cout << closestface << " " << numFaces << "      " <<  targetX << ", " << targetY << "      " << robotX << " " << robotY << "     " << showingEmotion << endl;
 			}
 
 
@@ -389,7 +393,7 @@ int main()
 					edata->QueryExpression(PXCFaceData::ExpressionsData::EXPRESSION_BROW_RAISER_LEFT, &raiseLeftBrow);
 					edata->QueryExpression(PXCFaceData::ExpressionsData::EXPRESSION_BROW_RAISER_RIGHT, &raiseRightBrow);
 
-					//Mouth
+					//Mouthc
 					edata->QueryExpression(PXCFaceData::ExpressionsData::EXPRESSION_MOUTH_OPEN, &openMouth);
 
 #pragma endregion
@@ -398,7 +402,7 @@ int main()
 					//suprise
 					if (raiseLeftBrow.intensity > 80 && raiseRightBrow.intensity > 80 && openMouth.intensity > 30)
 					{
-						if (neutral)
+						if (neutral && showingEmotion == false)
 						{
 							mySignal.start_animation(SupriseAnim);
 
@@ -457,12 +461,13 @@ void SendSignal::blink_timer(std::chrono::system_clock::duration x)
 
 void SendSignal::start_animation(const vector<keyframe> & anim)
 {
+	neutral = false;
 	current_animation = &anim;
 	time_anim_started = std::chrono::system_clock::now();
 	if (&anim == &BlinkAnim)
 		AudioPlay("blink.wav");
-	//if (&anim == &SupriseAnim)
-	//	AudioPlay("suprise.wav");
+	if (&anim == &SupriseAnim)
+		AudioPlay("suprise.wav");
 }
 
 void SendSignal::showFrame(const std::string & s)
@@ -483,6 +488,7 @@ void SendSignal::show_current_frame()
 	{
 		std::chrono::system_clock::duration time_passed = std::chrono::system_clock::now() - time_anim_started;
 		
+
 		for (auto & p : *current_animation)
 		{
 			
@@ -491,8 +497,9 @@ void SendSignal::show_current_frame()
 				showFrame(p.image); // p.x, p.y
 				if (showingEmotion)
 				{
-					robotX = p.x;
-					robotY = p.y;
+					robotX = Map(p.y, -35, 35, 0, 80);
+					robotY = Map(p.x, 45, -45, 80, 20);
+					
 				}
 				return;
 			}

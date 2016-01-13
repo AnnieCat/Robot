@@ -72,71 +72,128 @@ std::vector<std::tuple<A,B,C>> threeway_zip(const std::vector<A> & a, const std:
 	return results;
 }*/
 
+int robotX, robotY;
 
 #pragma region AnimationData
 
 vector<keyframe> BlinkAnim = {
-	{"../textures/neutral/eyeOpen.jpg", std::chrono::milliseconds(0),   50, 60 },
-	{"../textures/wink/wink_03.jpg",    std::chrono::milliseconds(33),  52, 60 },
-	{"../textures/wink/wink_04.jpg",    std::chrono::milliseconds(66),  54, 60 },
-	{"../textures/wink/wink_05.jpg",    std::chrono::milliseconds(100), 56, 60 },
-	{"../textures/wink/wink_06.jpg",    std::chrono::milliseconds(133), 58, 60 },
-	{"../textures/wink/wink_05.jpg",    std::chrono::milliseconds(166), 60, 60 },
-	{"../textures/wink/wink_04.jpg",    std::chrono::milliseconds(200), 62, 60 },
-	{"../textures/wink/wink_03.jpg",    std::chrono::milliseconds(233), 64, 60 },
-	{"../textures/wink/wink_02.jpg",    std::chrono::milliseconds(266), 66, 60 },
-	{"../textures/neutral/eyeOpen.jpg", std::chrono::milliseconds(300), 68, 60 }
+	{"../textures/neutral/eyeOpen.jpg", std::chrono::milliseconds(0),   robotX, robotY },
+	{"../textures/wink/wink_03.jpg",    std::chrono::milliseconds(33),  robotX, robotY },
+	{"../textures/wink/wink_04.jpg",    std::chrono::milliseconds(66),  robotX, robotY },
+	{"../textures/wink/wink_05.jpg",    std::chrono::milliseconds(100), robotX, robotY },
+	{"../textures/wink/wink_06.jpg",    std::chrono::milliseconds(133), robotX, robotY },
+	{"../textures/wink/wink_05.jpg",    std::chrono::milliseconds(166), robotX, robotY },
+	{"../textures/wink/wink_04.jpg",    std::chrono::milliseconds(200), robotX, robotY },
+	{"../textures/wink/wink_03.jpg",    std::chrono::milliseconds(233), robotX, robotY },
+	{"../textures/wink/wink_02.jpg",    std::chrono::milliseconds(266), robotX, robotY },
+	{"../textures/neutral/eyeOpen.jpg", std::chrono::milliseconds(300), robotX, robotY }
 };
 
 
 vector<keyframe> SupriseAnim = {
-	{ "../textures/neutral/eyeOpen.jpg", std::chrono::milliseconds(0), 40, 60 },
-	{ "../textures/suprise/suprise_4.jpg", std::chrono::milliseconds(33), 40, 60 },
-	{ "../textures/suprise/suprise_3-5.jpg", std::chrono::milliseconds(300), 40, 60 },
-	{ "../textures/suprise/suprise_3.jpg", std::chrono::milliseconds(333), 40, 60 },
-	{ "../textures/suprise/close_2.jpg", std::chrono::milliseconds(616), 40, 60 },
-	{ "../textures/suprise/close_3.jpg", std::chrono::milliseconds(683), 40, 60 },
-	{ "../textures/suprise/close_4.jpg", std::chrono::milliseconds(750), 40, 60 },
-	{ "../textures/suprise/close_5.jpg", std::chrono::milliseconds(816), 40, 60 },
-	{ "../textures/suprise/close_6.jpg", std::chrono::milliseconds(883), 40, 60 },
-	{ "../textures/suprise/close_7.jpg", std::chrono::milliseconds(950), 40, 60 },
-	{ "../textures/suprise/close_7.jpg", std::chrono::milliseconds(3500), 40, 60 },
-	{ "../textures/wink/wink_05.jpg", std::chrono::milliseconds(3533), 40, 60 },
-	{ "../textures/wink/wink_04.jpg", std::chrono::milliseconds(3566), 40, 60 },
-	{ "../textures/wink/wink_03.jpg", std::chrono::milliseconds(3600), 40, 60 },
-	{ "../textures/wink/wink_02.jpg", std::chrono::milliseconds(3633), 40, 60 },
-	{ "../textures/neutral/eyeOpen.jpg", std::chrono::milliseconds(3666), 40, 60 },
-	{ "../textures/wink/wink_02.jpg", std::chrono::milliseconds(3700), 40, 60 },
-	{ "../textures/wink/wink_02.jpg", std::chrono::milliseconds(3733), 40, 60 },
-	{ "../textures/wink/wink_04.jpg", std::chrono::milliseconds(3766), 40, 60 },
-	{ "../textures/wink/wink_05.jpg", std::chrono::milliseconds(3800), 40, 60 },
-	{ "../textures/wink/wink_04.jpg", std::chrono::milliseconds(3833), 40, 60 },
-	{ "../textures/wink/wink_02.jpg", std::chrono::milliseconds(3866), 40, 60 },
-	{ "../textures/wink/wink_02.jpg", std::chrono::milliseconds(3900), 40, 60 },
-	{ "../textures/neutral/eyeOpen.jpg", std::chrono::milliseconds(3933), 40, 60 },
-	{ "../textures/neutral/eyeOpen.jpg", std::chrono::milliseconds(4333), 40, 60 },
-	{ "../textures/suprise/lookR_02.jpg", std::chrono::milliseconds(4366), 40, 60 },
-	{ "../textures/suprise/lookR_03.jpg", std::chrono::milliseconds(4400), 40, 60 },
-	{ "../textures/suprise/lookR_04.jpg", std::chrono::milliseconds(4433), 40, 60 },
-	{ "../textures/suprise/lookR_05.jpg", std::chrono::milliseconds(4466), 40, 60 },
-	{ "../textures/suprise/lookR_05.jpg", std::chrono::milliseconds(5883), 40, 60 },
-	{ "../textures/suprise/lookR_04.jpg", std::chrono::milliseconds(5916), 40, 60 },
-	{ "../textures/suprise/lookR_03.jpg", std::chrono::milliseconds(5950), 40, 60 },
-	{ "../textures/suprise/lookR_02.jpg", std::chrono::milliseconds(5983), 40, 60 },
-	{ "../textures/neutral/eyeOpen.jpg", std::chrono::milliseconds(6016), 40, 60 },
-	{ "../textures/suprise/lookL_02.jpg", std::chrono::milliseconds(6050), 40, 60 },
-	{ "../textures/suprise/lookL_03.jpg", std::chrono::milliseconds(6083), 40, 60 },
-	{ "../textures/suprise/lookL_04.jpg", std::chrono::milliseconds(6116), 40, 60 },
-	{ "../textures/suprise/lookL_05.jpg", std::chrono::milliseconds(6150), 40, 60 },
-	{ "../textures/suprise/lookL_05.jpg", std::chrono::milliseconds(7816), 40, 60 },
-	{ "../textures/suprise/lookL_04-5.jpg", std::chrono::milliseconds(7883), 40, 60 },
-	{ "../textures/suprise/lookL_04.jpg", std::chrono::milliseconds(7950), 40, 60 },
-	{ "../textures/suprise/lookL_03-5.jpg", std::chrono::milliseconds(8016), 40, 60 },
-	{ "../textures/suprise/lookL_03.jpg", std::chrono::milliseconds(8066), 40, 60 },
-	{ "../textures/suprise/lookL_02-5.jpg", std::chrono::milliseconds(8133), 40, 60 },
-	{ "../textures/suprise/lookL_02.jpg", std::chrono::milliseconds(8200), 40, 60 },
-	{ "../textures/suprise/lookL_01-5.jpg", std::chrono::milliseconds(8283), 40, 60 },
-	{ "../textures/neutral/eyeOpen.jpg", std::chrono::milliseconds(8350), 40, 60 }
+	{ "../textures/neutral/eyeOpen.jpg", std::chrono::milliseconds(0),			0, 0 }, //0
+	{ "../textures/suprise/suprise_4.jpg", std::chrono::milliseconds(33),		-1.147292, 0 }, //2
+	{ "../textures/suprise/suprise_4.jpg", std::chrono::milliseconds(133),		-7.342667, 0 }, //8
+	{ "../textures/suprise/suprise_4.jpg", std::chrono::milliseconds(266),		1.302063, 0 }, //16
+	{ "../textures/suprise/suprise_3-5.jpg", std::chrono::milliseconds(300),	0.3375715, 0 },  //18
+	{ "../textures/suprise/suprise_3-5.jpg", std::chrono::milliseconds(316),	0, 0 },  //19
+	{ "../textures/suprise/suprise_3.jpg", std::chrono::milliseconds(333),		0, 0 }, //20
+	{ "../textures/suprise/suprise_3.jpg", std::chrono::milliseconds(416),		0, 0 }, //25
+	{ "../textures/suprise/suprise_3.jpg", std::chrono::milliseconds(600),		2.500671, 0 }, //36
+	{ "../textures/suprise/close_2.jpg", std::chrono::milliseconds(616),		2.650166, 0.003886184 },  //37
+	{ "../textures/suprise/close_3.jpg", std::chrono::milliseconds(683),		5.747901, 0.08441316 },  //41
+	{ "../textures/suprise/close_4.jpg", std::chrono::milliseconds(750),		11.43361, 0.2322157 },  //45
+	{ "../textures/suprise/close_5.jpg", std::chrono::milliseconds(816),		17.82514, 0.3983663 },  //49
+	{ "../textures/suprise/close_6.jpg", std::chrono::milliseconds(883),		23.04031, 0.5339369 },  //53
+	{ "../textures/suprise/close_7.jpg", std::chrono::milliseconds(950),		25.19696, 0.59 },  //57
+	{ "../textures/suprise/close_7.jpg", std::chrono::milliseconds(983),		25.19696, -0.59 },  //59
+	{ "../textures/suprise/close_7.jpg", std::chrono::milliseconds(1016),		25.19696, 0.59 },  //61
+	{ "../textures/suprise/close_7.jpg", std::chrono::milliseconds(1050),		25.19696, -0.59 },  //63
+	{ "../textures/suprise/close_7.jpg", std::chrono::milliseconds(1083),		25.19696, 0.59 },  //65
+	{ "../textures/suprise/close_7.jpg", std::chrono::milliseconds(1116),		25.19696, -0.59 },  //67
+	{ "../textures/suprise/close_7.jpg", std::chrono::milliseconds(1150),		25.19696, 0.59 },  //69
+	{ "../textures/suprise/close_7.jpg", std::chrono::milliseconds(1183),		25.19696, -0.59 },  //71
+	{ "../textures/suprise/close_7.jpg", std::chrono::milliseconds(1216),		25.19696, 0.59 },  //73
+	{ "../textures/suprise/close_7.jpg", std::chrono::milliseconds(1250),		25.19696, -0.59 },  //75
+	{ "../textures/suprise/close_7.jpg", std::chrono::milliseconds(1283),		25.19696, 0.59 },  //77
+	{ "../textures/suprise/close_7.jpg", std::chrono::milliseconds(1316),		25.19696, -0.59 },  //79
+	{ "../textures/suprise/close_7.jpg", std::chrono::milliseconds(1350),		25.19696, 0.59 },  //81
+	{ "../textures/suprise/close_7.jpg", std::chrono::milliseconds(1383),		25.19696, -0.59 },  //83
+	{ "../textures/suprise/close_7.jpg", std::chrono::milliseconds(1416),		25.19696, 0.59 },  //85
+	{ "../textures/suprise/close_7.jpg", std::chrono::milliseconds(1450),		25.19696, -0.59 },  //87
+	{ "../textures/suprise/close_7.jpg", std::chrono::milliseconds(1483),		25.19696, 0.59 },  //89
+	{ "../textures/suprise/close_7.jpg", std::chrono::milliseconds(1516),		25.19696, -0.59 },  //91
+	{ "../textures/suprise/close_7.jpg", std::chrono::milliseconds(1550),		25.19696, 0.59 },  //93	
+	{ "../textures/suprise/close_7.jpg", std::chrono::milliseconds(1583),		25.19696, -0.59 },  //95
+	{ "../textures/suprise/close_7.jpg", std::chrono::milliseconds(1616),		25.19696, 0.59 },  //97
+	{ "../textures/suprise/close_7.jpg", std::chrono::milliseconds(1650),		25.19696, -0.59 },  //99
+	{ "../textures/suprise/close_7.jpg", std::chrono::milliseconds(1683),		25.19696, 0.59 },  //101
+	{ "../textures/suprise/close_7.jpg", std::chrono::milliseconds(1716),		25.19696, -0.59 },  //103
+	{ "../textures/suprise/close_7.jpg", std::chrono::milliseconds(1750),		25.19696, 0.59 },  //105
+	{ "../textures/suprise/close_7.jpg", std::chrono::milliseconds(1783),		25.19696, -0.59 },  //107
+	{ "../textures/suprise/close_7.jpg", std::chrono::milliseconds(1816),		25.19696, 0.59 },  //109
+	{ "../textures/suprise/close_7.jpg", std::chrono::milliseconds(1850),		25.19696, -0.59 },  //111
+	{ "../textures/suprise/close_7.jpg", std::chrono::milliseconds(1883),		25.19696, 0.59 },  //113
+	{ "../textures/suprise/close_7.jpg", std::chrono::milliseconds(1916),		25.19696, -0.59 },  //115
+	{ "../textures/suprise/close_7.jpg", std::chrono::milliseconds(1966),		25.19696, 0.59 },  //118
+	{ "../textures/suprise/close_7.jpg", std::chrono::milliseconds(2016),		25.19696, -0.59 },  //121
+	{ "../textures/suprise/close_7.jpg", std::chrono::milliseconds(2066),		25.19696, 0.59 },  //124
+	{ "../textures/suprise/close_7.jpg", std::chrono::milliseconds(2116),		25.19696, -0.59 },  //127
+	{ "../textures/suprise/close_7.jpg", std::chrono::milliseconds(2183),		25.19696, 0.59 },  //131
+	{ "../textures/suprise/close_7.jpg", std::chrono::milliseconds(2250),		25.19696, -0.59 },  //135
+	{ "../textures/suprise/close_7.jpg", std::chrono::milliseconds(2316),		25.19696, 0.59 },  //139
+	{ "../textures/suprise/close_7.jpg", std::chrono::milliseconds(2383),		25.19696, -0.59 },  //143
+	{ "../textures/suprise/close_7.jpg", std::chrono::milliseconds(2483),		25.19696, 0.59 },  //149
+	{ "../textures/suprise/close_7.jpg", std::chrono::milliseconds(2583),		25.19696, -0.59 },  //155
+	{ "../textures/suprise/close_7.jpg", std::chrono::milliseconds(2683),		25.19696, 0.59 },  //161
+	{ "../textures/suprise/close_7.jpg", std::chrono::milliseconds(2783),		25.19696, -0.59 },  //167
+	{ "../textures/suprise/close_7.jpg", std::chrono::milliseconds(2883),		25.19696, 0.59 },  //173
+	{ "../textures/suprise/close_7.jpg", std::chrono::milliseconds(2983),		25.19696, -0.59 },  //179
+	{ "../textures/suprise/close_7.jpg", std::chrono::milliseconds(3083),		25.19696, 0 },  //185
+	{ "../textures/suprise/close_7.jpg", std::chrono::milliseconds(3500),		25.19696, 0 },  //210
+	{ "../textures/wink/wink_05.jpg", std::chrono::milliseconds(3533),			25.19696, 0 },     //212
+	{ "../textures/wink/wink_04.jpg", std::chrono::milliseconds(3566),			25.19696, 0 },     //214
+	{ "../textures/wink/wink_03.jpg", std::chrono::milliseconds(3600),			25.19696, 0 },     //216
+	{ "../textures/wink/wink_02.jpg", std::chrono::milliseconds(3633),			25.19696, 0 },     //218
+	{ "../textures/neutral/eyeOpen.jpg", std::chrono::milliseconds(3666),		25.19696, 0 },  //220
+	{ "../textures/wink/wink_02.jpg", std::chrono::milliseconds(3700),			25.19696, 0 },     //222
+	{ "../textures/wink/wink_02.jpg", std::chrono::milliseconds(3733),			25.19696, 0 },     //224
+	{ "../textures/wink/wink_04.jpg", std::chrono::milliseconds(3766),			25.19696, 0 },     //226
+	{ "../textures/wink/wink_05.jpg", std::chrono::milliseconds(3800),			25.19696, 0 },     //228
+	{ "../textures/wink/wink_04.jpg", std::chrono::milliseconds(3833),			25.19696, 0 },     //230
+	{ "../textures/wink/wink_02.jpg", std::chrono::milliseconds(3866),			25.19696, 0 },     //232
+	{ "../textures/wink/wink_02.jpg", std::chrono::milliseconds(3900),			25.19696, 0 },     //234
+	{ "../textures/neutral/eyeOpen.jpg", std::chrono::milliseconds(3933),		25.19696, 0 },  //236
+	{ "../textures/neutral/eyeOpen.jpg", std::chrono::milliseconds(4333),		25.19696, 0 },  //260
+	{ "../textures/suprise/lookR_02.jpg", std::chrono::milliseconds(4366),		25.19696, 0 }, //262
+	{ "../textures/suprise/lookR_03.jpg", std::chrono::milliseconds(4400),		25.19696, 0 }, //264
+	{ "../textures/suprise/lookR_03.jpg", std::chrono::milliseconds(4416),		25.19696, 0 }, //265
+	{ "../textures/suprise/lookR_04.jpg", std::chrono::milliseconds(4433),		25.12848, 0.05156203 }, //266
+	{ "../textures/suprise/lookR_05.jpg", std::chrono::milliseconds(4466),		24.60528, 0.4454874 }, //268
+	{ "../textures/suprise/lookR_05.jpg", std::chrono::milliseconds(4983),		-1.719009, 20.2654 }, //299
+	{ "../textures/suprise/lookR_05.jpg", std::chrono::milliseconds(5883),		-1.719009, 20.2654 }, //353
+	{ "../textures/suprise/lookR_04.jpg", std::chrono::milliseconds(5916),		-1.719009, 20.2654 }, //355
+	{ "../textures/suprise/lookR_03.jpg", std::chrono::milliseconds(5950),		-1.719009, 20.2654 }, //357
+	{ "../textures/suprise/lookR_02.jpg", std::chrono::milliseconds(5983),		-1.719009, 20.2654 }, //359
+	{ "../textures/neutral/eyeOpen.jpg", std::chrono::milliseconds(6016),		-1.719009, 20.2654 },  //361
+	{ "../textures/suprise/lookL_02.jpg", std::chrono::milliseconds(6050),		-1.719009, 20.2654 }, //363
+	{ "../textures/suprise/lookL_03.jpg", std::chrono::milliseconds(6083),		-1.719009, 20.2654 }, //365
+	{ "../textures/suprise/lookL_04.jpg", std::chrono::milliseconds(6116),		-1.717053, 19.98162 }, //367
+	{ "../textures/suprise/lookL_05.jpg", std::chrono::milliseconds(6150),		-1.711414, 19.1634 }, //369
+	{ "../textures/suprise/lookL_05.jpg", std::chrono::milliseconds(6866),		-1.348434, -33.5 }, //412
+	{ "../textures/suprise/lookL_05.jpg", std::chrono::milliseconds(7816),		-1.348434, -33.5 },      //469
+	{ "../textures/suprise/lookL_04-5.jpg", std::chrono::milliseconds(7883),	-1.348434, -33.5 },    //473
+	{ "../textures/suprise/lookL_04.jpg", std::chrono::milliseconds(7950),		-1.348434, -33.5 },      //477
+	{ "../textures/suprise/lookL_04.jpg", std::chrono::milliseconds(8000),		-1.348434, -33.5 },	//480
+	{ "../textures/suprise/lookL_03-5.jpg", std::chrono::milliseconds(8016),	-1.579713, -33.03981 },    //481
+	{ "../textures/suprise/lookL_03-5.jpg", std::chrono::milliseconds(8050),	-2.24054, -31.72493 },    //483
+	{ "../textures/suprise/lookL_03.jpg", std::chrono::milliseconds(8066),		-2.41259, -31.50904 },      //484
+	{ "../textures/suprise/lookL_02-5.jpg", std::chrono::milliseconds(8133),	-4.977773, -28.29022 },    //488
+	{ "../textures/suprise/lookL_02-5.jpg", std::chrono::milliseconds(8183),	-6.244736, -26.70042 },    //491
+	{ "../textures/suprise/lookL_02.jpg", std::chrono::milliseconds(8200),		-6.219673, -26.59326 },      //492
+	{ "../textures/suprise/lookL_01-5.jpg", std::chrono::milliseconds(8283),	-5.456642, -23.3308 },    //497
+	{ "../textures/neutral/eyeOpen.jpg", std::chrono::milliseconds(8350),		-4.309409, -18.42561 },        //501
+	{ "../textures/neutral/eyeOpen.jpg", std::chrono::milliseconds(8633),		0, 0 }        //518
 };
 
 
@@ -212,7 +269,7 @@ void SendSignal::setup(){
 }
 
 
-int robotX, robotY;
+
 
 
 int main()

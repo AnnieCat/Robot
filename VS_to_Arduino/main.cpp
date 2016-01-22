@@ -55,7 +55,7 @@ struct keyframe
 const vector<keyframe> * current_animation;
 std::chrono::system_clock::time_point time_anim_started;
 std::chrono::system_clock::time_point reset_blink_timer;
-int supriseThreshhold, abashedThreshhold, winkThreshhold;
+
 
 stbi_uc *myImage = stbi_load("../textures/neutral/eyeOpen.jpg", &width, &height, nullptr, 3);
 stbi_uc *neutralImage = stbi_load("../textures/neutral/eyeOpen.jpg", &width, &height, nullptr, 3);
@@ -269,6 +269,173 @@ vector<keyframe> SupriseAnim = {
 	{ "../textures/neutral/eyeOpen.jpg", std::chrono::milliseconds(8633),		0, 0 }        //518
 };
 
+vector<keyframe> SmileAnim = {
+	{ "../textures/neutral/eyeOpen.jpg", std::chrono::milliseconds(0), 0, 0 },	//0
+	{ "../textures/smile/smile_03.jpg", std::chrono::milliseconds(33), -0.1853507, 0 },	//2
+	{ "../textures/smile/smile_04.jpg", std::chrono::milliseconds(66), -0.7043329, 0 },	//4
+	{ "../textures/smile/smile_05.jpg", std::chrono::milliseconds(100), -1.501341, 0 },	//6
+	{ "../textures/smile/smile_06.jpg", std::chrono::milliseconds(133), -2.52077, 0 },	//8
+	{ "../textures/smile/smile_07.jpg", std::chrono::milliseconds(166), -3.707015, 0 },	//10
+
+	{ "../textures/smile/smile_07.jpg", std::chrono::milliseconds(466), -12.71506, 0 },	//28
+	{ "../textures/smile/smile_07.jpg", std::chrono::milliseconds(566), -5.948471, 0 },	//34
+	{ "../textures/smile/smile_07.jpg", std::chrono::milliseconds(666), -12.71506, 0 },	//40
+	{ "../textures/smile/smile_07.jpg", std::chrono::milliseconds(766), -5.948471, 0 },	//46
+	{ "../textures/smile/smile_07.jpg", std::chrono::milliseconds(866), -12.71506, 0 },	//52
+	{ "../textures/smile/smile_07.jpg", std::chrono::milliseconds(966), -5.948471, 0 },	//58
+	{ "../textures/smile/smile_07.jpg", std::chrono::milliseconds(1066), -12.71506, 0 },	//64
+	{ "../textures/smile/smile_07.jpg", std::chrono::milliseconds(1166), -5.948471, 0 },	//70
+	{ "../textures/smile/smile_07.jpg", std::chrono::milliseconds(1266), -12.71506, 0 },	//76
+	{ "../textures/smile/smile_07.jpg", std::chrono::milliseconds(1366), -5.948471, 0 },	//82
+	{ "../textures/smile/smile_07.jpg", std::chrono::milliseconds(1466), -12.71506, 0 },	//88
+	{ "../textures/smile/smile_07.jpg", std::chrono::milliseconds(1550), -12.71506, 0 },	//93
+
+	{ "../textures/smile/smile_07.jpg", std::chrono::milliseconds(1633), -10.06231, 0 },	//98
+	{ "../textures/smile/smile_06.jpg", std::chrono::milliseconds(1666), -8.022939, 0 },	//100
+	{ "../textures/smile/smile_05.jpg", std::chrono::milliseconds(1700), -5.797216, 0 },	//102
+	{ "../textures/smile/smile_04.jpg", std::chrono::milliseconds(1733), -3.633615, 0 },	//104
+	{ "../textures/smile/smile_03.jpg", std::chrono::milliseconds(1766), -1.780579, 0 },	//106
+	{ "../textures/smile/smile_02.jpg", std::chrono::milliseconds(1800), -0.486558, 0 },	//108
+	{ "../textures/neutral/eyeOpen.jpg", std::chrono::milliseconds(1833), 0, 0 }	//110
+};
+
+
+vector<keyframe> HypnotizeAnim = {
+	{ "../textures/hypnotize/twirl_02.jpg", std::chrono::milliseconds(33), robotX, robotY },	//0
+	{ "../textures/hypnotize/twirl_03.jpg", std::chrono::milliseconds(66), robotX, robotY },	//2
+	{ "../textures/hypnotize/twirl_04.jpg", std::chrono::milliseconds(100), robotX, robotY },	//4
+	{ "../textures/hypnotize/twirl_05.jpg", std::chrono::milliseconds(133), robotX, robotY },	//6
+	{ "../textures/hypnotize/twirl_06.jpg", std::chrono::milliseconds(166), robotX, robotY },	//8
+	{ "../textures/hypnotize/twirl_07.jpg", std::chrono::milliseconds(200), robotX, robotY },	//10
+	{ "../textures/hypnotize/twirl_08.jpg", std::chrono::milliseconds(233), robotX, robotY },	//12
+	{ "../textures/hypnotize/twirl_09.jpg", std::chrono::milliseconds(266), robotX, robotY },	//14
+	{ "../textures/hypnotize/twirl_10.jpg", std::chrono::milliseconds(300), robotX, robotY },	//16
+	{ "../textures/hypnotize/twirl_11.jpg", std::chrono::milliseconds(333), robotX, robotY },	//18
+	{ "../textures/hypnotize/twirl_12.jpg", std::chrono::milliseconds(366), robotX, robotY },	//20
+	{ "../textures/hypnotize/twirl_13.jpg", std::chrono::milliseconds(400), robotX, robotY },	//22
+
+	{ "../textures/hypnotize/twirl_02.jpg", std::chrono::milliseconds(433), robotX, robotY },	//24
+	{ "../textures/hypnotize/twirl_03.jpg", std::chrono::milliseconds(466), robotX, robotY },	//26
+	{ "../textures/hypnotize/twirl_04.jpg", std::chrono::milliseconds(500), robotX, robotY },	//28
+	{ "../textures/hypnotize/twirl_05.jpg", std::chrono::milliseconds(533), robotX, robotY },	//30
+	{ "../textures/hypnotize/twirl_06.jpg", std::chrono::milliseconds(566), robotX, robotY },	//32
+	{ "../textures/hypnotize/twirl_07.jpg", std::chrono::milliseconds(600), robotX, robotY },	//34
+	{ "../textures/hypnotize/twirl_08.jpg", std::chrono::milliseconds(633), robotX, robotY },	//36
+	{ "../textures/hypnotize/twirl_09.jpg", std::chrono::milliseconds(666), robotX, robotY },	//38
+	{ "../textures/hypnotize/twirl_10.jpg", std::chrono::milliseconds(700), robotX, robotY },	//40
+	{ "../textures/hypnotize/twirl_11.jpg", std::chrono::milliseconds(733), robotX, robotY },	//42
+	{ "../textures/hypnotize/twirl_12.jpg", std::chrono::milliseconds(766), robotX, robotY },	//44
+	{ "../textures/hypnotize/twirl_13.jpg", std::chrono::milliseconds(800), robotX, robotY },	//46
+
+	{ "../textures/hypnotize/twirl_02.jpg", std::chrono::milliseconds(833), robotX, robotY },	//48
+	{ "../textures/hypnotize/twirl_03.jpg", std::chrono::milliseconds(866), robotX, robotY },	//50
+	{ "../textures/hypnotize/twirl_04.jpg", std::chrono::milliseconds(900), robotX, robotY },	//52
+	{ "../textures/hypnotize/twirl_05.jpg", std::chrono::milliseconds(933), robotX, robotY },	//54
+	{ "../textures/hypnotize/twirl_06.jpg", std::chrono::milliseconds(966), robotX, robotY },	//56
+	{ "../textures/hypnotize/twirl_07.jpg", std::chrono::milliseconds(1000), robotX, robotY },	//58
+	{ "../textures/hypnotize/twirl_08.jpg", std::chrono::milliseconds(1033), robotX, robotY },	//60
+	{ "../textures/hypnotize/twirl_09.jpg", std::chrono::milliseconds(1066), robotX, robotY },	//62
+	{ "../textures/hypnotize/twirl_10.jpg", std::chrono::milliseconds(1100), robotX, robotY },	//64
+	{ "../textures/hypnotize/twirl_11.jpg", std::chrono::milliseconds(1133), robotX, robotY },	//66
+	{ "../textures/hypnotize/twirl_12.jpg", std::chrono::milliseconds(1166), robotX, robotY },	//68
+	{ "../textures/hypnotize/twirl_13.jpg", std::chrono::milliseconds(1200), robotX, robotY },	//70
+
+	{ "../textures/hypnotize/twirl_02.jpg", std::chrono::milliseconds(1233), robotX, robotY },	//72
+	{ "../textures/hypnotize/twirl_03.jpg", std::chrono::milliseconds(1266), robotX, robotY },	//74
+	{ "../textures/hypnotize/twirl_04.jpg", std::chrono::milliseconds(1300), robotX, robotY },	//76
+	{ "../textures/hypnotize/twirl_05.jpg", std::chrono::milliseconds(1333), robotX, robotY },	//78
+	{ "../textures/hypnotize/twirl_06.jpg", std::chrono::milliseconds(1366), robotX, robotY },	//80
+	{ "../textures/hypnotize/twirl_07.jpg", std::chrono::milliseconds(1400), robotX, robotY },	//82
+	{ "../textures/hypnotize/twirl_08.jpg", std::chrono::milliseconds(1433), robotX, robotY },	//84
+	{ "../textures/hypnotize/twirl_09.jpg", std::chrono::milliseconds(1466), robotX, robotY },	//86
+	{ "../textures/hypnotize/twirl_10.jpg", std::chrono::milliseconds(1500), robotX, robotY },	//88
+	{ "../textures/hypnotize/twirl_11.jpg", std::chrono::milliseconds(1533), robotX, robotY },	//90
+	{ "../textures/hypnotize/twirl_12.jpg", std::chrono::milliseconds(1566), robotX, robotY },	//92
+	{ "../textures/hypnotize/twirl_13.jpg", std::chrono::milliseconds(1600), robotX, robotY },	//94
+};
+
+vector<keyframe> KissAnim = {
+	{ "../textures/kiss/eyeToHeart_02.jpg", std::chrono::milliseconds(0), 0, 0 }, //0
+	{ "../textures/kiss/eyeToHeart_03.jpg", std::chrono::milliseconds(66), 0, 0 }, //4
+	{ "../textures/kiss/eyeToHeart_04.jpg", std::chrono::milliseconds(133), 0, 0 }, //8
+	{ "../textures/kiss/eyeToHeart_05.jpg", std::chrono::milliseconds(200), 0, 0 }, //12
+	{ "../textures/kiss/eyeToHeart_04.jpg", std::chrono::milliseconds(266), 0, 0 }, //16
+	{ "../textures/kiss/eyeToHeart_03.jpg", std::chrono::milliseconds(333), 0, 0 }, //20
+	{ "../textures/kiss/eyeToHeart_02.jpg", std::chrono::milliseconds(400), 0, 0 }, //24
+	{ "../textures/kiss/eyeToHeart_01.jpg", std::chrono::milliseconds(466), 0, 0 }, //28
+	{ "../textures/kiss/eyeToHeart_02.jpg", std::chrono::milliseconds(533), 0, 0 }, //32
+	{ "../textures/kiss/eyeToHeart_03.jpg", std::chrono::milliseconds(600), 0, 0 }, //36
+	{ "../textures/kiss/eyeToHeart_04.jpg", std::chrono::milliseconds(666), 0, 0 }, //40
+	{ "../textures/kiss/eyeToHeart_05.jpg", std::chrono::milliseconds(733), 0, 0 }, //44
+	{ "../textures/kiss/eyeToHeart_04.jpg", std::chrono::milliseconds(800), 0, 0 }, //48
+	{ "../textures/kiss/eyeToHeart_03.jpg", std::chrono::milliseconds(866), 0, 0 }, //52
+	{ "../textures/kiss/eyeToHeart_02.jpg", std::chrono::milliseconds(933), 0, 0 }, //56
+	{ "../textures/kiss/eyeToHeart_01.jpg", std::chrono::milliseconds(1000), 0, 0 }, //60
+	{ "../textures/kiss/eyeToHeart_02.jpg", std::chrono::milliseconds(1066), 0, 0 }, //64
+	{ "../textures/kiss/eyeToHeart_03.jpg", std::chrono::milliseconds(1133), 0, 0 }, //68
+	{ "../textures/kiss/eyeToHeart_04.jpg", std::chrono::milliseconds(1200), 0, 0 }, //72
+	{ "../textures/kiss/eyeToHeart_05.jpg", std::chrono::milliseconds(1266), 0, 0 }, //76
+	{ "../textures/kiss/eyeToHeart_04.jpg", std::chrono::milliseconds(1333), 0, 0 }, //80
+	{ "../textures/kiss/eyeToHeart_03.jpg", std::chrono::milliseconds(1400), 0, 0 }, //84
+	{ "../textures/kiss/eyeToHeart_02.jpg", std::chrono::milliseconds(1466), 0, 0 }, //88
+	{ "../textures/kiss/eyeToHeart_01.jpg", std::chrono::milliseconds(1533), 0, 0 }, //92
+	{ "../textures/kiss/eyeToHeart_02.jpg", std::chrono::milliseconds(1600), 0, 0 }, //96
+	{ "../textures/kiss/eyeToHeart_03.jpg", std::chrono::milliseconds(1666), 0, 0 }, //100
+	{ "../textures/kiss/eyeToHeart_04.jpg", std::chrono::milliseconds(1733), 0, 0 }, //104
+	{ "../textures/kiss/eyeToHeart_05.jpg", std::chrono::milliseconds(1800), 0, 0 }, //108
+	{ "../textures/kiss/eyeToHeart_04.jpg", std::chrono::milliseconds(1866), 0, 0 }, //112
+	{ "../textures/kiss/eyeToHeart_03.jpg", std::chrono::milliseconds(1933), 0, 0 },		//116
+
+	{ "../textures/kiss/eyeToHeart_02.jpg", std::chrono::milliseconds(2000), 3.3187, 0 }, //120
+	{ "../textures/kiss/eyeToHeart_02.jpg", std::chrono::milliseconds(2066), 6.63739, 0 }, //124
+	{ "../textures/kiss/eyeToHeart_01.jpg", std::chrono::milliseconds(2100), 5.718095, -2.014473 }, //126
+	{ "../textures/kiss/eyeToHeart_01.jpg", std::chrono::milliseconds(2166), 3.091522, -7.770142 }, //130
+	{ "../textures/kiss/eyeToHeart_01.jpg", std::chrono::milliseconds(2200), 1.105374, -8.773625 }, //132
+	{ "../textures/kiss/eyeToHeart_01.jpg", std::chrono::milliseconds(2266), -4.569336, -11.64072 }, //136
+	{ "../textures/kiss/eyeToHeart_02.jpg", std::chrono::milliseconds(2300), -5.427465, -11.55955 }, //138
+	{ "../textures/kiss/eyeToHeart_03.jpg", std::chrono::milliseconds(2400), -13.15066, -10.82897 }, //144
+	{ "../textures/kiss/eyeToHeart_03.jpg", std::chrono::milliseconds(2466), -16.15411, -10.54486 }, //148
+	{ "../textures/kiss/eyeToHeart_04.jpg", std::chrono::milliseconds(2500), -16.9875, -8.892462 }, //150
+	{ "../textures/kiss/eyeToHeart_05.jpg", std::chrono::milliseconds(2600), -21.48778, 0.03048706 }, //156
+	{ "../textures/kiss/eyeToHeart_04.jpg", std::chrono::milliseconds(2700), -16.98749, 8.901994 }, //162
+	{ "../textures/kiss/eyeToHeart_04.jpg", std::chrono::milliseconds(2733), -16.15411, 10.54486 }, //164
+	{ "../textures/kiss/eyeToHeart_03.jpg", std::chrono::milliseconds(2800), -10.36172, 11.09279 }, //168
+	{ "../textures/kiss/eyeToHeart_03.jpg", std::chrono::milliseconds(2866), -4.569336, 11.64072 }, //172
+	{ "../textures/kiss/eyeToHeart_02.jpg", std::chrono::milliseconds(2900), -2.583171, 10.63723 }, //174
+	{ "../textures/kiss/eyeToHeart_02.jpg", std::chrono::milliseconds(2966), 3.091522, 7.770142 }, //178
+	{ "../textures/neutral/eyeOpen.jpg", std::chrono::milliseconds(3000), 2.290016, 5.755661 }, //180
+	{ "../textures/neutral/eyeOpen.jpg", std::chrono::milliseconds(3066), 0, 0 }, //184
+};
+
+vector<keyframe> AngryAnim = {
+	{ "../textures/tongue/shock_02.jpg", std::chrono::milliseconds(0), -1.996765, 0 }, //0
+	{ "../textures/tongue/shock_03.jpg", std::chrono::milliseconds(33), -2.203956, 0 }, //2
+	{ "../textures/tongue/shock_04.jpg", std::chrono::milliseconds(66), -2.588738, 0 }, //4
+	{ "../textures/tongue/shock_05.jpg", std::chrono::milliseconds(100), -2.795929, 0 }, //6
+	{ "../textures/tongue/shock_05.jpg", std::chrono::milliseconds(300), -1.996765, 0 }, //18
+	{ "../textures/tongue/shock_05.jpg", std::chrono::milliseconds(633), -1.996765, 0 }, //38
+
+	{ "../textures/tongue/angry_03.jpg", std::chrono::milliseconds(700), -1.525029, 0 }, //42
+	{ "../textures/tongue/angry_04.jpg", std::chrono::milliseconds(766), -0.4001213, 0 }, //46
+	{ "../textures/tongue/angry_05.jpg", std::chrono::milliseconds(966), 2.539154, 0 }, //58
+
+	{ "../textures/tongue/rageAway_02.jpg", std::chrono::milliseconds(2733), -0.3805258, -17.55855 }, //164
+	{ "../textures/tongue/rageAway_03.jpg", std::chrono::milliseconds(2766), -1.608116, -24.94111 }, //166
+	{ "../textures/tongue/rageAway_04.jpg", std::chrono::milliseconds(2800), -2.835706, -32.32367 }, //168
+	{ "../textures/tongue/rageAway_05.jpg", std::chrono::milliseconds(2833), -3.963762, -39.10765 }, //170
+	{ "../textures/tongue/rageAway_06.jpg", std::chrono::milliseconds(2866), -4.89275, -44.69445 }, //172
+	{ "../textures/tongue/rageAway_07.jpg", std::chrono::milliseconds(2900), -5.523139, -48.48553 }, //174
+	{ "../textures/tongue/rageAway_08.jpg", std::chrono::milliseconds(2933), -5.755386, -49.88223 }, //176
+
+	{ "../textures/tongue/rageAway_08.jpg", std::chrono::milliseconds(5000), -5.755386, -49.88223 }, //300
+	{ "../textures/tongue/upperLeft_05.jpg", std::chrono::milliseconds(5066), -5.535151, -47.97345 }, //304
+	{ "../textures/tongue/upperLeft_04.jpg", std::chrono::milliseconds(5166), -4.554641, -39.47531 }, //310
+	{ "../textures/tongue/upperLeft_03.jpg", std::chrono::milliseconds(5266), -3.131311, -27.13923 }, //316
+	{ "../textures/tongue/upperLeft_02.jpg", std::chrono::milliseconds(5366), -1.644729, -14.25494 }, //322
+	{ "../textures/neutral/eyeOpen.jpg", std::chrono::milliseconds(5466), -0.474442, -4.112 }, //328
+	{ "../textures/neutral/eyeOpen.jpg", std::chrono::milliseconds(5566), 0, 0 }, //334
+	};
+
 
 #pragma endregion
 
@@ -344,7 +511,7 @@ void SendSignal::setup(){
 }
 
 
-
+int supriseThreshhold, abashedThreshhold, winkThreshhold, smileThreshhold, hypnoThreshhold, kissThreshhold, tongueThreshhold;
 
 
 int main()
@@ -365,13 +532,8 @@ int main()
 
 #pragma region loadData
 
-	PXCFaceData::ExpressionsData::FaceExpressionResult raiseLeftBrow;
-	PXCFaceData::ExpressionsData::FaceExpressionResult raiseRightBrow;
-	PXCFaceData::ExpressionsData::FaceExpressionResult lowerLeftBrow;
-	PXCFaceData::ExpressionsData::FaceExpressionResult lowerRightBrow;
-	PXCFaceData::ExpressionsData::FaceExpressionResult openMouth;
-	PXCFaceData::ExpressionsData::FaceExpressionResult	leftEyeClose;
-	PXCFaceData::ExpressionsData::FaceExpressionResult	rightEyeClose;
+	PXCFaceData::ExpressionsData::FaceExpressionResult raiseLeftBrow, raiseRightBrow, lowerLeftBrow, lowerRightBrow, openMouth, leftEyeClose, rightEyeClose, smile, kiss, tongue;
+	
 
 	
 #pragma endregion
@@ -474,10 +636,15 @@ int main()
 					
 					//Mouth
 					edata->QueryExpression(PXCFaceData::ExpressionsData::EXPRESSION_MOUTH_OPEN, &openMouth);
+					edata->QueryExpression(PXCFaceData::ExpressionsData::EXPRESSION_SMILE, &smile);
+					edata->QueryExpression(PXCFaceData::ExpressionsData::EXPRESSION_KISS, &kiss);
+					edata->QueryExpression(PXCFaceData::ExpressionsData::EXPRESSION_TONGUE_OUT, &tongue);
 
 					//Eyes
 					edata->QueryExpression(PXCFaceData::ExpressionsData::EXPRESSION_EYES_CLOSED_LEFT, &leftEyeClose);
 					edata->QueryExpression(PXCFaceData::ExpressionsData::EXPRESSION_EYES_CLOSED_RIGHT, &rightEyeClose);
+
+					
 
 					
 
@@ -497,11 +664,23 @@ int main()
 								supriseThreshhold = 0;
 							}
 					}
+					//hypnotize
+					if (raiseLeftBrow.intensity > 80 && raiseRightBrow.intensity > 80 && openMouth.intensity < 10)
+					{
+						hypnoThreshhold++;
+						if (hypnoThreshhold > 20)
+							if (neutral&&showingEmotion == false)
+							{
+								mySignal.start_animation(HypnotizeAnim);
+								showingEmotion = true;
+								hypnoThreshhold = 0;
+							}
+					}
 					//abashed
 					if (lowerLeftBrow.intensity > 80 && lowerRightBrow.intensity > 80)
 					{
 						abashedThreshhold++;
-						if (abashedThreshhold > 30);
+						if (abashedThreshhold > 40);
 							if (neutral && showingEmotion == false)
 							{
 								mySignal.start_animation(AbashedAnim);
@@ -522,14 +701,48 @@ int main()
 							}
 					}
 
-					//cout << "Suprise: " << raiseLeftBrow.intensity << ", " << raiseRightBrow.intensity << ", " << openMouth.intensity << endl;
-					//cout << "Abashed: " << lowerLeftBrow.intensity << ", " << lowerRightBrow.intensity << endl;
+					//Smile
+					if (smile.intensity > 80)
+					{
+						smileThreshhold++;
+						if (smileThreshhold > 10)
+							if (neutral&& showingEmotion == false)
+							{
+								mySignal.start_animation(SmileAnim);
+								showingEmotion = true;
+								smileThreshhold = 0;
+							}
+					}
+					//kiss
+					if (kiss.intensity > 80)
+					{
+						kissThreshhold++;
+						if (kissThreshhold > 12)
+							if (neutral && showingEmotion == false)
+							{
+								mySignal.start_animation(KissAnim);
+								showingEmotion = true;
+								kissThreshhold = 0;
+							}
+					}
+					//Tongue
+					if (tongue.intensity > 50)
+					{
+						tongueThreshhold++;
+						if (tongueThreshhold > 15)
+							if (neutral && showingEmotion == false)
+							{
+								mySignal.start_animation(AngryAnim);
+								showingEmotion = true;
+								tongueThreshhold = 0;
+							}
+					}
+
 #pragma endregion
 				}
 			}
 				
-			cout << "suprise: " << raiseLeftBrow.intensity << ", " << raiseRightBrow.intensity << ", " << openMouth.intensity << "  abashed: " << lowerLeftBrow.intensity << ", " << lowerRightBrow.intensity << "  wink: " << leftEyeClose.intensity << ", " << rightEyeClose.intensity << endl;
-		
+			
 			mySignal.mSenseMgr->ReleaseFrame();
 
 #pragma endregion
@@ -586,6 +799,14 @@ void SendSignal::start_animation(const vector<keyframe> & anim)
 		AudioPlay("sad.wav");
 	if (&anim == &WinkAnim)
 		AudioPlay("wink.wav");
+	if (&anim == &SmileAnim)
+		AudioPlay("happy.wav");
+	if (&anim == &HypnotizeAnim)
+		AudioPlay("hypnotize.wav");
+	if (&anim == &KissAnim)
+		AudioPlay("kiss.wav");
+	if (&anim == &AngryAnim)
+		AudioPlay("angry.wav");
 }
 
 void SendSignal::showFrame(const std::string & s)

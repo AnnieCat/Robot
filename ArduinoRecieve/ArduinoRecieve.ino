@@ -10,15 +10,17 @@ Servo myServoX;
 Servo myServoY;
 
 int myX = 90;
-int myY = 60;
-
+int myY = 80;
 
 MIDI_CREATE_DEFAULT_INSTANCE();
 
 void HandleNoteOn(byte channel, byte pitch, byte velocity)
 {  
+  digitalWrite(12, HIGH);
+    myX = pitch + 50;
+    myY = velocity + 40;
 
-  if(channel == 1)
+  /*if(channel == 1)
   {
     digitalWrite(12, LOW);
     myServoX.write(90);
@@ -29,7 +31,7 @@ void HandleNoteOn(byte channel, byte pitch, byte velocity)
     digitalWrite(12, HIGH);
     myX = pitch + 50;
     myY = velocity + 20;
-  }
+  }*/
 }
 
 void setup() {

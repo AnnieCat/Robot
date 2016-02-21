@@ -1,17 +1,5 @@
-#define STB_IMAGE_IMPLEMENTATION
-#include "stb_image.h"
-
-#include "pxcsensemanager.h"
-#include "pxcemotion.h"
-
-#include "Midi.h"
-
-#include "fmod.hpp"
-#include "common.h"
-
-#include <GLFW\glfw3.h>
 #pragma comment(lib, "opengl32.lib")
-
+#define STB_IMAGE_IMPLEMENTATION
 #include <vector>
 #include <string>
 
@@ -23,6 +11,17 @@
 #include <string>
 #include <time.h>
 
+#include "stb_image.h"
+
+#include "pxcsensemanager.h"
+//#include "pxcemotion.h"
+
+#include "Midi.h"
+
+#include "fmod.hpp"
+#include "common.h"
+
+#include "GLFW\glfw3.h"
 
 
 using namespace std;
@@ -46,7 +45,8 @@ struct keyframe
 {
 	std::string image;
 	std::chrono::milliseconds time;
-	float x, y;
+	//float x, y;
+	double x, y;
 };
 
 //typedef  altAnimation;
@@ -270,33 +270,33 @@ vector<keyframe> SupriseAnim = {
 };
 
 vector<keyframe> SmileAnim = {
-	{ "../textures/neutral/eyeOpen.jpg", std::chrono::milliseconds(0), 0, 0 },	//0
-	{ "../textures/smile/smile_03.jpg", std::chrono::milliseconds(33), -0.1853507, 0 },	//2
-	{ "../textures/smile/smile_04.jpg", std::chrono::milliseconds(66), -0.7043329, 0 },	//4
-	{ "../textures/smile/smile_05.jpg", std::chrono::milliseconds(100), -1.501341, 0 },	//6
-	{ "../textures/smile/smile_06.jpg", std::chrono::milliseconds(133), -2.52077, 0 },	//8
-	{ "../textures/smile/smile_07.jpg", std::chrono::milliseconds(166), -3.707015, 0 },	//10
+	{ "../textures/neutral/eyeOpen.jpg", std::chrono::milliseconds(0),	robotX,	robotY },	//0
+	{ "../textures/smile/smile_03.jpg", std::chrono::milliseconds(33),	robotX,	robotY },	//2
+	{ "../textures/smile/smile_04.jpg", std::chrono::milliseconds(66),	robotX,	robotY },	//4
+	{ "../textures/smile/smile_05.jpg", std::chrono::milliseconds(100), robotX,	robotY },	//6
+	{ "../textures/smile/smile_06.jpg", std::chrono::milliseconds(133), robotX,	robotY },	//8
+	{ "../textures/smile/smile_07.jpg", std::chrono::milliseconds(166), robotX,	robotY },	//10
 
-	{ "../textures/smile/smile_07.jpg", std::chrono::milliseconds(466), -12.71506, 0 },	//28
-	{ "../textures/smile/smile_07.jpg", std::chrono::milliseconds(566), -5.948471, 0 },	//34
-	{ "../textures/smile/smile_07.jpg", std::chrono::milliseconds(666), -12.71506, 0 },	//40
-	{ "../textures/smile/smile_07.jpg", std::chrono::milliseconds(766), -5.948471, 0 },	//46
-	{ "../textures/smile/smile_07.jpg", std::chrono::milliseconds(866), -12.71506, 0 },	//52
-	{ "../textures/smile/smile_07.jpg", std::chrono::milliseconds(966), -5.948471, 0 },	//58
-	{ "../textures/smile/smile_07.jpg", std::chrono::milliseconds(1066), -12.71506, 0 },	//64
-	{ "../textures/smile/smile_07.jpg", std::chrono::milliseconds(1166), -5.948471, 0 },	//70
-	{ "../textures/smile/smile_07.jpg", std::chrono::milliseconds(1266), -12.71506, 0 },	//76
-	{ "../textures/smile/smile_07.jpg", std::chrono::milliseconds(1366), -5.948471, 0 },	//82
-	{ "../textures/smile/smile_07.jpg", std::chrono::milliseconds(1466), -12.71506, 0 },	//88
-	{ "../textures/smile/smile_07.jpg", std::chrono::milliseconds(1550), -12.71506, 0 },	//93
+	{ "../textures/smile/smile_07.jpg", std::chrono::milliseconds(466),  robotX, robotY },	//28
+	{ "../textures/smile/smile_07.jpg", std::chrono::milliseconds(566),  robotX, robotY },	//34
+	{ "../textures/smile/smile_07.jpg", std::chrono::milliseconds(666),  robotX, robotY },	//40
+	{ "../textures/smile/smile_07.jpg", std::chrono::milliseconds(766),  robotX, robotY },	//46
+	{ "../textures/smile/smile_07.jpg", std::chrono::milliseconds(866),  robotX, robotY },	//52
+	{ "../textures/smile/smile_07.jpg", std::chrono::milliseconds(966),  robotX, robotY },	//58
+	{ "../textures/smile/smile_07.jpg", std::chrono::milliseconds(1066), robotX, robotY },	//64
+	{ "../textures/smile/smile_07.jpg", std::chrono::milliseconds(1166), robotX, robotY },	//70
+	{ "../textures/smile/smile_07.jpg", std::chrono::milliseconds(1266), robotX, robotY },	//76
+	{ "../textures/smile/smile_07.jpg", std::chrono::milliseconds(1366), robotX, robotY },	//82
+	{ "../textures/smile/smile_07.jpg", std::chrono::milliseconds(1466), robotX, robotY },	//88
+	{ "../textures/smile/smile_07.jpg", std::chrono::milliseconds(1550), robotX, robotY },	//93
 
-	{ "../textures/smile/smile_07.jpg", std::chrono::milliseconds(1633), -10.06231, 0 },	//98
-	{ "../textures/smile/smile_06.jpg", std::chrono::milliseconds(1666), -8.022939, 0 },	//100
-	{ "../textures/smile/smile_05.jpg", std::chrono::milliseconds(1700), -5.797216, 0 },	//102
-	{ "../textures/smile/smile_04.jpg", std::chrono::milliseconds(1733), -3.633615, 0 },	//104
-	{ "../textures/smile/smile_03.jpg", std::chrono::milliseconds(1766), -1.780579, 0 },	//106
-	{ "../textures/smile/smile_02.jpg", std::chrono::milliseconds(1800), -0.486558, 0 },	//108
-	{ "../textures/neutral/eyeOpen.jpg", std::chrono::milliseconds(1833), 0, 0 }	//110
+	{ "../textures/smile/smile_07.jpg", std::chrono::milliseconds(1633),  robotX, robotY },	//98
+	{ "../textures/smile/smile_06.jpg", std::chrono::milliseconds(1666),  robotX, robotY },	//100
+	{ "../textures/smile/smile_05.jpg", std::chrono::milliseconds(1700),  robotX, robotY },	//102
+	{ "../textures/smile/smile_04.jpg", std::chrono::milliseconds(1733),  robotX, robotY },	//104
+	{ "../textures/smile/smile_03.jpg", std::chrono::milliseconds(1766),  robotX, robotY },	//106
+	{ "../textures/smile/smile_02.jpg", std::chrono::milliseconds(1800),  robotX, robotY },	//108
+	{ "../textures/neutral/eyeOpen.jpg", std::chrono::milliseconds(1833), robotX, robotY }	//110
 };
 
 
@@ -504,7 +504,7 @@ void SendSignal::setup(){
 
 	fdata = faceModule->CreateOutput();
 
-	mSenseMgr->EnableEmotion();
+	//mSenseMgr->EnableEmotion();
 	cout << "initialized realSense" << endl;
 
 	mSenseMgr->Init();
@@ -520,8 +520,8 @@ int main()
 	mySignal.setup();
 
 	glfwInit();
-	GLFWwindow *win = glfwCreateWindow(800, 480, "Robot Face", nullptr, nullptr);
-	//GLFWwindow *win = glfwCreateWindow(800, 480, "Robot Face", glfwGetPrimaryMonitor(), nullptr); //fullscreen
+	//GLFWwindow *win = glfwCreateWindow(800, 480, "Robot Face", nullptr, nullptr);
+	GLFWwindow *win = glfwCreateWindow(800, 480, "Robot Face", glfwGetPrimaryMonitor(), nullptr); //fullscreen
 
 	std::chrono::system_clock::time_point t0 = std::chrono::system_clock::now();
 	
@@ -557,9 +557,6 @@ int main()
 		
 		if (mySignal.mSenseMgr->AcquireFrame(true) >= PXC_STATUS_NO_ERROR)
 		{
-			PXCEmotion *emotionDet = mySignal.mSenseMgr->QueryEmotion();
-			PXCEmotion::EmotionData emotion[10];
-
 			mySignal.fdata->Update();
 
 			int numFaces = mySignal.fdata->QueryNumberOfDetectedFaces();
@@ -568,34 +565,34 @@ int main()
 			iSeeYou = false;
 			int lowestdisparity = INT_MAX;
 			int targetX, targetY;
-
+#pragma region Face Tracking
 			for (int i = 0; i < numFaces; ++i)
 			{
 
-				emotionDet->QueryAllEmotionData(i, &emotion[0]);
-
-#pragma region Face Tracking
-
-				if (emotion[0].rectangle.x > -1 && emotion[0].rectangle.y > -1)
+				auto face = mySignal.fdata->QueryFaceByID(i);
+				if (face)
 				{
-
-					iSeeYou = true;
-					
-					int faceX = Map(emotion[0].rectangle.x, 500, 0, 0, 80); //Camera min/max : 500, 0    Robot Min/Max : 50 / 130 
-					int faceY = Map(emotion[0].rectangle.y, 0, 320, 0, 60); // Camera min/max:  0,320   Robot min/max:  40,100
-					int d = abs(faceX - robotX) + abs(faceY - robotY);   // disparity between robot's current gaze and i'th face in the camera's current frame 
-					if (d < lowestdisparity)
+					PXCRectI32 faceBox;
+					face->QueryDetection()->QueryBoundingRect(&faceBox);
+					if (faceBox.x > -1 && faceBox.y > -1)
 					{
-						closestface = i;
-						lowestdisparity = d;
-						targetX = faceX;
-						targetY = faceY;
+
+						iSeeYou = true;
+
+						int faceX = Map(faceBox.x, 1400, 0, 0, 80); //Camera min/max : 1400, 0    Robot Min/Max : 50 / 130 
+						//int faceY = Map(faceBox.y, 0, 320, 0, 60); // Camera min/max:  0,320   Robot min/max:  40,100
+						int faceY = Map(faceBox.y, 0, 700, 0, 60);
+						int d = abs(faceX - robotX) + abs(faceY - robotY);   // disparity between robot's current gaze and i'th face in the camera's current frame 
+						if (d < lowestdisparity)
+						{
+							closestface = i;
+							lowestdisparity = d;
+							targetX = faceX;
+							targetY = faceY;
+						}
+
+						// the following code pivots the robot to turn toward the target face up to 1 degree on each axis per frame.
 					}
-
-					// the following code pivots the robot to turn toward the target face up to 1 degree on each axis per frame.
-
-
-
 				}
 			}
 			if (iSeeYou)
@@ -610,7 +607,7 @@ int main()
 				if (targetY < robotY)
 					robotY--;
 				
-				player.SendMidiMessage(numFaces + 1, robotX, robotY);
+				player.SendMidiMessage(1, robotX, robotY);
 
 				//cout << robotX << ", " << robotY << "       emotion: " << showingEmotion << ", neutral:" << neutral << endl;
 				//cout << closestface << " " << numFaces << "      " <<  targetX << ", " << targetY << "      " << robotX << " " << robotY << "     " << showingEmotion << endl;
@@ -648,12 +645,14 @@ int main()
 
 					
 
+					
+
 #pragma endregion
 
 #pragma region Sending Commands
 
 					//suprise
-					if (raiseLeftBrow.intensity > 80 && raiseRightBrow.intensity > 80 && openMouth.intensity > 50)
+					if (raiseLeftBrow.intensity > 70 && raiseRightBrow.intensity > 70 && openMouth.intensity > 30)
 					{
 						supriseThreshhold++;
 						if (supriseThreshhold > 5)
@@ -664,8 +663,8 @@ int main()
 								supriseThreshhold = 0;
 							}
 					}
-					//hypnotize
-					if (raiseLeftBrow.intensity > 80 && raiseRightBrow.intensity > 80 && openMouth.intensity < 10)
+					//hypnotize is a bad one lots of false negatives
+					/*if (raiseLeftBrow.intensity > 90 && raiseRightBrow.intensity > 90 && openMouth.intensity < 10)
 					{
 						hypnoThreshhold++;
 						if (hypnoThreshhold > 20)
@@ -675,7 +674,7 @@ int main()
 								showingEmotion = true;
 								hypnoThreshhold = 0;
 							}
-					}
+					}*/
 					//abashed
 					if (lowerLeftBrow.intensity > 80 && lowerRightBrow.intensity > 80)
 					{
@@ -702,7 +701,7 @@ int main()
 					}
 
 					//Smile
-					if (smile.intensity > 80)
+					if (smile.intensity > 50)
 					{
 						smileThreshhold++;
 						if (smileThreshhold > 10)
@@ -725,8 +724,8 @@ int main()
 								kissThreshhold = 0;
 							}
 					}
-					//Tongue
-					if (tongue.intensity > 50)
+					//Tongue don't use lots of false posatives and anim reversed
+					/*if (tongue.intensity > 70)
 					{
 						tongueThreshhold++;
 						if (tongueThreshhold > 15)
@@ -736,7 +735,7 @@ int main()
 								showingEmotion = true;
 								tongueThreshhold = 0;
 							}
-					}
+					}*/
 
 #pragma endregion
 				}
@@ -753,6 +752,11 @@ int main()
 		// All Output goes Here- rendering, commands to arduino
 		glfwGetFramebufferSize(win, &width, &height);
 		glfwMakeContextCurrent(win);
+
+		int state = glfwGetMouseButton(win, GLFW_MOUSE_BUTTON_LEFT);
+		if (state == GLFW_PRESS)
+			exit(EXIT_SUCCESS);
+
 
 		glViewport(0, 0, width, height);
 		glClearColor(1, 1, 1, 1);
